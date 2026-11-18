@@ -25,8 +25,6 @@ interface Props {
   onSubmit: (values: ExpenseFormValues) => Promise<void>;
   onCancel: () => void;
   submitLabel?: string;
-  onSecondary?: (values: ExpenseFormValues) => Promise<void>;
-  secondaryLabel?: string;
 }
 
 export function ExpenseForm({
@@ -34,9 +32,7 @@ export function ExpenseForm({
   defaultDate,
   onSubmit,
   onCancel,
-  submitLabel = "Save & Close",
-  onSecondary,
-  secondaryLabel,
+  submitLabel = "Save",
 }: Props) {
   const { settings } = useDb();
   const [saving, setSaving] = useState(false);
@@ -58,12 +54,11 @@ export function ExpenseForm({
 
   const category = form.watch("category");
 
-  const run = async (values: ExpenseFormValues, close: boolean) => {
+  const run = async (values: ExpenseFormValues) => {
     setSaving(true);
     setError(null);
     try {
-      if (!close && onSecondary) await onSecondary(values);
-      else await onSubmit(values);
+      await onSubmit(values);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Save failed");
     } finally {
@@ -74,7 +69,7 @@ export function ExpenseForm({
   return (
     <form
       className="flex flex-col gap-3"
-      onSubmit={form.handleSubmit((v) => run(v, !onSecondary))}
+      onSubmit={form.handleSubmit(run)}
     >
       <Field label="Date" error={form.formState.errors.paymentDate?.message}>
         <Input type="date" {...form.register("paymentDate")} />
@@ -135,27 +130,9 @@ export function ExpenseForm({
         <Button type="button" variant="danger" onClick={onCancel}>
           Cancel
         </Button>
-        <div className="flex items-center gap-2">
-          {onSecondary ? (
-            <>
-              <Button
-                type="button"
-                variant="secondary"
-                disabled={saving}
-                onClick={form.handleSubmit((v) => run(v, true))}
-              >
-                {submitLabel}
-              </Button>
-              <Button type="submit" disabled={saving}>
-                {secondaryLabel ?? "Save & Add Another"}
-              </Button>
-            </>
-          ) : (
-            <Button type="submit" disabled={saving}>
-              {submitLabel}
-            </Button>
-          )}
-        </div>
+        <Button type="submit" disabled={saving}>
+          {submitLabel}
+        </Button>
       </div>
     </form>
   );

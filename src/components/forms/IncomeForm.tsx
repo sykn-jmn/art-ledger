@@ -26,8 +26,6 @@ interface Props {
   onSubmit: (values: IncomeFormValues) => Promise<void>;
   onCancel: () => void;
   submitLabel?: string;
-  secondaryLabel?: string;
-  onSecondary?: (values: IncomeFormValues) => Promise<void>;
 }
 
 export function IncomeForm({
@@ -35,9 +33,7 @@ export function IncomeForm({
   defaultDate,
   onSubmit,
   onCancel,
-  submitLabel = "Save & Close",
-  secondaryLabel,
-  onSecondary,
+  submitLabel = "Save",
 }: Props) {
   const { settings } = useDb();
   const [saving, setSaving] = useState(false);
@@ -102,28 +98,15 @@ export function IncomeForm({
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
         e.preventDefault();
-        form.handleSubmit(handlePrimary)();
+        form.handleSubmit(handleSave)();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form, onSecondary]);
+  }, [form]);
 
-  const handlePrimary = async (values: IncomeFormValues) => {
-    setSaving(true);
-    setError(null);
-    try {
-      if (onSecondary) await onSecondary(values);
-      else await onSubmit(values);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Save failed");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleClose = async (values: IncomeFormValues) => {
+  const handleSave = async (values: IncomeFormValues) => {
     setSaving(true);
     setError(null);
     try {
@@ -138,7 +121,7 @@ export function IncomeForm({
   return (
     <form
       className="flex flex-col gap-3"
-      onSubmit={form.handleSubmit(onSecondary ? handlePrimary : handleClose)}
+      onSubmit={form.handleSubmit(handleSave)}
     >
       <p className="font-mono text-[11px] text-outline">
         {initial ? `Order #${initial.orderNumber}` : `Next order #${previewOrder}`}
@@ -269,27 +252,9 @@ export function IncomeForm({
         <Button type="button" variant="danger" onClick={onCancel}>
           Cancel
         </Button>
-        <div className="flex items-center gap-2">
-          {onSecondary ? (
-            <>
-              <Button
-                type="button"
-                variant="secondary"
-                disabled={saving}
-                onClick={form.handleSubmit(handleClose)}
-              >
-                {submitLabel}
-              </Button>
-              <Button type="submit" disabled={saving}>
-                {secondaryLabel ?? "Save & Add Another"}
-              </Button>
-            </>
-          ) : (
-            <Button type="submit" disabled={saving}>
-              {submitLabel}
-            </Button>
-          )}
-        </div>
+        <Button type="submit" disabled={saving}>
+          {submitLabel}
+        </Button>
       </div>
     </form>
   );

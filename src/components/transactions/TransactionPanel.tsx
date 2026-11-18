@@ -82,43 +82,34 @@ export function TransactionPanel({ mode, onClose, stickyDate }: Props) {
           ? "New Expense Transaction"
           : "New Currency Conversion";
 
-  const handleIncomeSave = async (values: IncomeFormValues, addAnother: boolean) => {
+  const handleIncomeSave = async (values: IncomeFormValues) => {
     if (mode.kind === "edit" && mode.type === "income") {
       await updateIncome(mode.record.id, values);
       onClose();
       return;
     }
     await createIncome(values);
-    setDateDefault(values.paymentDate);
-    if (!addAnother) onClose();
+    onClose();
   };
 
-  const handleExpenseSave = async (
-    values: ExpenseFormValues,
-    addAnother: boolean,
-  ) => {
+  const handleExpenseSave = async (values: ExpenseFormValues) => {
     if (mode.kind === "edit" && mode.type === "expense") {
       await updateExpense(mode.record.id, values);
       onClose();
       return;
     }
     await createExpense(values);
-    setDateDefault(values.paymentDate);
-    if (!addAnother) onClose();
+    onClose();
   };
 
-  const handleConversionSave = async (
-    values: ConversionFormValues,
-    addAnother: boolean,
-  ) => {
+  const handleConversionSave = async (values: ConversionFormValues) => {
     if (mode.kind === "edit" && mode.type === "conversion") {
       await updateConversion(mode.record.id, values);
       onClose();
       return;
     }
     await createConversion(values);
-    setDateDefault(values.conversionDate);
-    if (!addAnother) onClose();
+    onClose();
   };
 
   return (
@@ -174,12 +165,7 @@ export function TransactionPanel({ mode, onClose, stickyDate }: Props) {
               }
               defaultDate={dateDefault}
               onCancel={onClose}
-              onSubmit={(v) => handleIncomeSave(v, false)}
-              onSecondary={
-                mode.kind === "create"
-                  ? (v) => handleIncomeSave(v, true)
-                  : undefined
-              }
+              onSubmit={handleIncomeSave}
             />
           ) : null}
           {type === "expense" ? (
@@ -191,12 +177,7 @@ export function TransactionPanel({ mode, onClose, stickyDate }: Props) {
               }
               defaultDate={dateDefault}
               onCancel={onClose}
-              onSubmit={(v) => handleExpenseSave(v, false)}
-              onSecondary={
-                mode.kind === "create"
-                  ? (v) => handleExpenseSave(v, true)
-                  : undefined
-              }
+              onSubmit={handleExpenseSave}
             />
           ) : null}
           {type === "conversion" ? (
@@ -208,12 +189,7 @@ export function TransactionPanel({ mode, onClose, stickyDate }: Props) {
               }
               defaultDate={dateDefault}
               onCancel={onClose}
-              onSubmit={(v) => handleConversionSave(v, false)}
-              onSecondary={
-                mode.kind === "create"
-                  ? (v) => handleConversionSave(v, true)
-                  : undefined
-              }
+              onSubmit={handleConversionSave}
             />
           ) : null}
         </div>
