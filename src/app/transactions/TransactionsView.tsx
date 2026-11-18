@@ -11,21 +11,22 @@ import {
   type PanelMode,
 } from "@/components/transactions/TransactionPanel";
 import { QuickEntry } from "@/components/transactions/QuickEntry";
+import { BulkPhpValuationPanel } from "@/components/transactions/BulkPhpValuationPanel";
 import {
+  bulkApplyPhpValuation,
   createConversion,
   createExpense,
   createIncome,
   deleteConversion,
   deleteExpense,
   deleteIncome,
-  finalizeIncomeValuation,
 } from "@/db/transactions";
 import { formatDisplayDate, inYearQuarter } from "@/lib/utils/dates";
 import { add, formatMoney } from "@/lib/utils/money";
 import {
   EXPENSE_CATEGORY_LABELS,
   PAYMENT_METHOD_LABELS,
-  type IncomeTransaction,
+  type CurrencyCode,
   type TransactionType,
 } from "@/types";
 
@@ -49,7 +50,6 @@ type UnifiedRow = {
   phpTaxValuation?: string | null;
   phpValuationRate?: string | null;
   phpValuationSource?: string | null;
-  phpValuationAutoPending?: boolean;
 };
 
 export default function TransactionsPage() {
@@ -64,6 +64,8 @@ export default function TransactionsPage() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [needsReviewOnly, setNeedsReviewOnly] = useState(false);
   const [selected, setSelected] = useState<UnifiedRow | null>(null);
+  const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  const [bulkOpen, setBulkOpen] = useState(false);
 
   const year = settings?.selectedYear ?? new Date().getFullYear();
   const quarter = settings?.selectedQuarter ?? "all";
@@ -101,7 +103,6 @@ export default function TransactionsPage() {
         phpTaxValuation: i.phpTaxValuation,
         phpValuationRate: i.phpValuationRate,
         phpValuationSource: i.phpValuationSource,
-        phpValuationAutoPending: i.phpValuationAutoPending,
       });
     }
 
@@ -158,6 +159,48 @@ export default function TransactionsPage() {
     return true;
   });
 
+  const selectableIncomeIds = useMemo(
+    () =>
+      filtered
+        .filter((r) => r.type === "income" && r.currency !== "PHP")
+        .map((r) => r.id),
+    [filtered],
+  );
+
+  const checkedForeignIncomes = useMemo(
+    () =>
+      incomes.filter(
+        (i) => checkedIds.has(i.id) && i.currency !== "PHP",
+      ),
+    [incomes, checkedIds],
+  );
+
+  const allSelectableChecked =
+    selectableIncomeIds.length > 0 &&
+    selectableIncomeIds.every((id) => checkedIds.has(id));
+
+  const toggleChecked = (id: string) => {
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    setCheckedIds((prev) => {
+      if (allSelectableChecked) {
+        const next = new Set(prev);
+        for (const id of selectableIncomeIds) next.delete(id);
+        return next;
+      }
+      const next = new Set(prev);
+      for (const id of selectableIncomeIds) next.add(id);
+      return next;
+    });
+  };
+
   const openEdit = (row: UnifiedRow) => {
     if (row.type === "income") {
       const record = incomes.find((i) => i.id === row.id);
@@ -179,29 +222,11 @@ export default function TransactionsPage() {
     else if (row.type === "expense") await deleteExpense(row.id);
     else await deleteConversion(row.id);
     setSelected(null);
-  };
-
-  const selectedIncome: IncomeTransaction | null =
-    selected?.type === "income"
-      ? (incomes.find((i) => i.id === selected.id) ?? null)
-      : null;
-
-  const handleFinalize = async (row: UnifiedRow) => {
-    if (row.type !== "income") return;
-    const refreshed = await finalizeIncomeValuation(row.id);
-    setSelected((prev) =>
-      prev && prev.id === row.id
-        ? {
-            ...prev,
-            needsReview: refreshed.needsReview,
-            reviewReasons: refreshed.reviewReasons,
-            phpValuationAutoPending: refreshed.phpValuationAutoPending,
-            phpTaxValuation: refreshed.phpTaxValuation,
-            phpValuationRate: refreshed.phpValuationRate,
-            phpValuationSource: refreshed.phpValuationSource,
-          }
-        : prev,
-    );
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(row.id);
+      return next;
+    });
   };
 
   const handleDuplicate = async (row: UnifiedRow) => {
@@ -215,7 +240,9 @@ export default function TransactionsPage() {
         currency: record.currency,
         grossAmount: record.grossAmount,
         paymentMethod: record.paymentMethod,
-        // Omit valuation so duplicate re-runs Frankfurter auto-fill + needs review
+        phpTaxValuation: record.phpTaxValuation ?? undefined,
+        phpValuationRate: record.phpValuationRate ?? undefined,
+        phpValuationSource: record.phpValuationSource ?? undefined,
       });
     } else if (row.type === "expense") {
       const record = expenses.find((e) => e.id === row.id);
@@ -248,6 +275,15 @@ export default function TransactionsPage() {
     }
   };
 
+  const handleBulkApply = async (
+    ratesByCurrency: Partial<Record<CurrencyCode, string>>,
+  ) => {
+    const ids = checkedForeignIncomes.map((i) => i.id);
+    await bulkApplyPhpValuation({ incomeIds: ids, ratesByCurrency });
+    setBulkOpen(false);
+    setCheckedIds(new Set());
+  };
+
   if (!ready) return <p>Loading…</p>;
 
   return (
@@ -257,7 +293,7 @@ export default function TransactionsPage() {
           <SectionHeading
             as="h1"
             className="text-[24px] font-bold tracking-tight"
-            info="Record and manage income, expenses, and currency conversions for the selected year and quarter. List View supports search and filters; Quick Entry is for pasting or typing many rows at once. These records feed Books of Accounts, Tax Summary, and Currency Balances."
+            info="Record and manage income, expenses, and currency conversions for the selected year and quarter. Select foreign income rows to bulk-apply a PHP exchange rate. List View supports search and filters; Quick Entry is for pasting or typing many rows at once."
           >
             Transactions
           </SectionHeading>
@@ -365,11 +401,35 @@ export default function TransactionsPage() {
             </label>
           </div>
 
+          {checkedForeignIncomes.length > 0 ? (
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/20 bg-primary-fixed/25 px-3 py-2">
+              <p className="text-[12px] text-on-surface">
+                <span className="font-semibold">
+                  {checkedForeignIncomes.length}
+                </span>{" "}
+                foreign income selected — enter an exchange rate to calculate PHP
+                tax valuations.
+              </p>
+              <Button type="button" onClick={() => setBulkOpen(true)}>
+                Set PHP valuation
+              </Button>
+            </div>
+          ) : null}
+
           <Card className="overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left min-w-[900px]">
+              <table className="w-full text-left min-w-[940px]">
                 <thead>
                   <tr className="bg-surface-container-low text-[11px] uppercase tracking-wider text-outline">
+                    <th className="px-3 py-2 w-10">
+                      <input
+                        type="checkbox"
+                        aria-label="Select all foreign income"
+                        checked={allSelectableChecked}
+                        disabled={selectableIncomeIds.length === 0}
+                        onChange={toggleSelectAll}
+                      />
+                    </th>
                     <th className="px-4 py-2">Date</th>
                     <th className="px-4 py-2">Type</th>
                     <th className="px-4 py-2">Reference</th>
@@ -384,93 +444,108 @@ export default function TransactionsPage() {
                   {filtered.length === 0 ? (
                     <tr>
                       <td
-                        colSpan={8}
+                        colSpan={9}
                         className="px-4 py-10 text-center text-on-surface-variant"
                       >
                         No transactions yet. Add income, expenses, or conversions.
                       </td>
                     </tr>
                   ) : (
-                    filtered.map((row) => (
-                      <tr
-                        key={`${row.type}-${row.id}`}
-                        className="border-t border-outline-variant/20 hover:bg-surface-container-low/50 cursor-pointer"
-                        onClick={() => setSelected(row)}
-                      >
-                        <td className="px-4 py-2.5 font-mono text-[12px]">
-                          {formatDisplayDate(row.date)}
-                        </td>
-                        <td className="px-4 py-2.5 capitalize">
-                          <Badge
-                            tone={
-                              row.type === "income"
-                                ? "primary"
-                                : row.type === "expense"
-                                  ? "neutral"
-                                  : "success"
-                            }
-                          >
-                            {row.type}
-                          </Badge>
-                        </td>
-                        <td className="px-4 py-2.5 font-mono text-[12px] text-primary">
-                          {row.reference}
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <div className="font-medium">{row.name}</div>
-                          <div className="text-[12px] text-on-surface-variant truncate max-w-md">
-                            {row.description}
-                          </div>
-                          {row.needsReview ? (
-                            <Badge tone="warn">
-                              {row.phpValuationAutoPending
-                                ? "Needs review · auto valuation"
-                                : "Needs review"}
-                            </Badge>
-                          ) : null}
-                        </td>
-                        <td className="px-4 py-2.5 text-right font-mono text-[12px]">
-                          {row.amountLabel}
-                        </td>
-                        <td className="px-4 py-2.5 text-right font-mono text-[12px]">
-                          {row.feesLabel}
-                        </td>
-                        <td className="px-4 py-2.5 text-right font-mono text-[12px] font-semibold text-primary">
-                          {row.netLabel}
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <div
-                            className="flex items-center gap-1"
+                    filtered.map((row) => {
+                      const canSelect =
+                        row.type === "income" && row.currency !== "PHP";
+                      return (
+                        <tr
+                          key={`${row.type}-${row.id}`}
+                          className="border-t border-outline-variant/20 hover:bg-surface-container-low/50 cursor-pointer"
+                          onClick={() => setSelected(row)}
+                        >
+                          <td
+                            className="px-3 py-2.5"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <button
-                              type="button"
-                              className="p-1.5 rounded hover:bg-surface-container"
-                              aria-label="Edit"
-                              onClick={() => openEdit(row)}
+                            {canSelect ? (
+                              <input
+                                type="checkbox"
+                                aria-label={`Select ${row.reference}`}
+                                checked={checkedIds.has(row.id)}
+                                onChange={() => toggleChecked(row.id)}
+                              />
+                            ) : (
+                              <span className="inline-block w-4" />
+                            )}
+                          </td>
+                          <td className="px-4 py-2.5 font-mono text-[12px]">
+                            {formatDisplayDate(row.date)}
+                          </td>
+                          <td className="px-4 py-2.5 capitalize">
+                            <Badge
+                              tone={
+                                row.type === "income"
+                                  ? "primary"
+                                  : row.type === "expense"
+                                    ? "neutral"
+                                    : "success"
+                              }
                             >
-                              <Pencil size={14} />
-                            </button>
-                            <button
-                              type="button"
-                              className="p-1.5 rounded hover:bg-surface-container"
-                              aria-label="Duplicate"
-                              onClick={() => handleDuplicate(row)}
+                              {row.type}
+                            </Badge>
+                          </td>
+                          <td className="px-4 py-2.5 font-mono text-[12px] text-primary">
+                            {row.reference}
+                          </td>
+                          <td className="px-4 py-2.5">
+                            <div className="font-medium">{row.name}</div>
+                            <div className="text-[12px] text-on-surface-variant truncate max-w-md">
+                              {row.description}
+                            </div>
+                            {row.needsReview ? (
+                              <Badge tone="warn">Needs review</Badge>
+                            ) : null}
+                          </td>
+                          <td className="px-4 py-2.5 text-right font-mono text-[12px]">
+                            {row.amountLabel}
+                          </td>
+                          <td className="px-4 py-2.5 text-right font-mono text-[12px]">
+                            {row.feesLabel}
+                          </td>
+                          <td className="px-4 py-2.5 text-right font-mono text-[12px] font-semibold text-primary">
+                            {row.netLabel}
+                          </td>
+                          <td className="px-4 py-2.5">
+                            <div
+                              className="flex items-center gap-1"
+                              onClick={(e) => e.stopPropagation()}
                             >
-                              <Copy size={14} />
-                            </button>
-                            <button
-                              type="button"
-                              className="p-1.5 rounded hover:bg-error-container text-outline hover:text-error"
-                              aria-label="Delete"
-                              onClick={() => handleDelete(row)}
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                              <button
+                                type="button"
+                                className="p-1.5 rounded hover:bg-surface-container"
+                                aria-label="Edit"
+                                onClick={() => openEdit(row)}
+                              >
+                                <Pencil size={14} />
+                              </button>
+                              <button
+                                type="button"
+                                className="p-1.5 rounded hover:bg-surface-container"
+                                aria-label="Duplicate"
+                                onClick={() => handleDuplicate(row)}
+                              >
+                                <Copy size={14} />
+                              </button>
+                              <button
+                                type="button"
+                                className="p-1.5 rounded hover:bg-error-container text-outline hover:text-error"
+                                aria-label="Delete"
+                                onClick={() => handleDelete(row)}
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>
@@ -536,9 +611,6 @@ export default function TransactionsPage() {
                       {selected.phpTaxValuation
                         ? formatMoney(selected.phpTaxValuation, "PHP")
                         : "—"}
-                      {selected.phpValuationAutoPending && selected.needsReview ? (
-                        <Badge tone="warn">Auto · pending finalize</Badge>
-                      ) : null}
                     </dd>
                   </div>
                   <div>
@@ -567,20 +639,6 @@ export default function TransactionsPage() {
                 </div>
               ) : null}
             </dl>
-
-            {selectedIncome?.phpValuationAutoPending &&
-            selectedIncome.needsReview &&
-            selectedIncome.phpTaxValuation ? (
-              <div className="mt-4 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-3 flex flex-col gap-2">
-                <p className="text-[12px] text-on-surface-variant leading-relaxed">
-                  This PHP valuation was auto-calculated from Frankfurter and is
-                  not yet included in Tax Summary or Books of Accounts. Finalize
-                  to accept it permanently.
-                </p>
-                <Button onClick={() => handleFinalize(selected)}>Finalize</Button>
-              </div>
-            ) : null}
-
             <div className="flex gap-2 mt-6">
               <Button onClick={() => openEdit(selected)}>Edit</Button>
               <Button variant="secondary" onClick={() => handleDuplicate(selected)}>
@@ -590,6 +648,22 @@ export default function TransactionsPage() {
                 Delete
               </Button>
             </div>
+          </aside>
+        </>
+      ) : null}
+
+      {bulkOpen ? (
+        <>
+          <div
+            className="fixed inset-0 top-14 left-0 lg:left-60 bg-inverse-surface/25 z-40"
+            onClick={() => setBulkOpen(false)}
+          />
+          <aside className="fixed top-14 right-0 bottom-0 w-full max-w-[440px] bg-surface-container-lowest shadow-2xl z-50 p-6 overflow-y-auto">
+            <BulkPhpValuationPanel
+              incomes={checkedForeignIncomes}
+              onApply={handleBulkApply}
+              onCancel={() => setBulkOpen(false)}
+            />
           </aside>
         </>
       ) : null}

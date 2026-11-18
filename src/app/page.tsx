@@ -145,7 +145,7 @@ export default function DashboardPage() {
             ) : null}
           </div>
           <div className="text-[12px] text-on-surface-variant mt-1">
-            Missing or unfinalized valuations
+            Missing PHP valuations
           </div>
         </Card>
       </div>
@@ -155,7 +155,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <SectionHeading
               className="font-semibold text-[15px]"
-              info="Income entries that still need a PHP tax valuation confirmed. Auto-calculated Frankfurter amounts stay here until you Finalize them on the transaction details. Until then they do not count toward Gross Income, estimated tax, or journal mapping."
+              info="Income entries that still need a PHP tax valuation. Select them on Transactions and use Set PHP valuation to apply an exchange rate in bulk. Until then they understate Gross Income, estimated tax, and journal mapping."
             >
               Transactions needing review
             </SectionHeading>
@@ -172,11 +172,7 @@ export default function DashboardPage() {
                 <span>
                   #{i.orderNumber} · {i.clientName}
                 </span>
-                <Badge tone="warn">
-                  {i.phpValuationAutoPending
-                    ? "Finalize auto valuation"
-                    : "Missing PHP valuation"}
-                </Badge>
+                <Badge tone="warn">Missing PHP valuation</Badge>
               </li>
             ))}
           </ul>

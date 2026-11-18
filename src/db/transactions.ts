@@ -28,7 +28,11 @@ import {
   ensureSettings,
   getDb,
 } from "@/db/database";
-import { resolvePhpValuation } from "@/lib/calculations/php-valuation";
+import {
+  applyRateToIncome,
+  reviewForIncome,
+  type BulkRateMap,
+} from "@/lib/calculations/php-valuation";
 
 async function usedOrderNumbers(excludeId?: string): Promise<Set<string>> {
   const db = getDb();
@@ -71,14 +75,7 @@ export async function createIncome(
     overrides: values.feeOverrides as Partial<Record<FeeType, string>>,
   });
 
-  const valuation = await resolvePhpValuation({
-    currency: values.currency,
-    grossAmount: values.grossAmount,
-    paymentDate: values.paymentDate,
-    phpTaxValuation: values.phpTaxValuation,
-    phpValuationRate: values.phpValuationRate,
-    phpValuationSource: values.phpValuationSource,
-  });
+  const review = reviewForIncome(values.currency, values.phpTaxValuation);
 
   const income: IncomeTransaction = {
     id: uuid(),
@@ -90,12 +87,17 @@ export async function createIncome(
     grossAmount: money(values.grossAmount),
     paymentMethod: values.paymentMethod,
     netReceived: feeResult.netReceived,
-    phpTaxValuation: valuation.phpTaxValuation,
-    phpValuationRate: valuation.phpValuationRate,
-    phpValuationSource: valuation.phpValuationSource,
-    phpValuationAutoPending: valuation.phpValuationAutoPending,
-    needsReview: valuation.needsReview,
-    reviewReasons: valuation.reviewReasons,
+    phpTaxValuation: values.phpTaxValuation
+      ? money(values.phpTaxValuation)
+      : values.currency === "PHP"
+        ? money(values.grossAmount)
+        : null,
+    phpValuationRate: values.phpValuationRate
+      ? money(values.phpValuationRate, 6)
+      : null,
+    phpValuationSource: values.phpValuationSource?.trim() || null,
+    needsReview: review.needsReview,
+    reviewReasons: review.reviewReasons,
     createdAt: ts,
     updatedAt: ts,
   };
@@ -166,15 +168,7 @@ export async function updateIncome(
     overrides: values.feeOverrides as Partial<Record<FeeType, string>>,
   });
 
-  const valuation = await resolvePhpValuation({
-    currency: values.currency,
-    grossAmount: values.grossAmount,
-    paymentDate: values.paymentDate,
-    phpTaxValuation: values.phpTaxValuation,
-    phpValuationRate: values.phpValuationRate,
-    phpValuationSource: values.phpValuationSource,
-    existing,
-  });
+  const review = reviewForIncome(values.currency, values.phpTaxValuation);
 
   const updated: IncomeTransaction = {
     ...existing,
@@ -186,12 +180,17 @@ export async function updateIncome(
     grossAmount: money(values.grossAmount),
     paymentMethod: values.paymentMethod,
     netReceived: feeResult.netReceived,
-    phpTaxValuation: valuation.phpTaxValuation,
-    phpValuationRate: valuation.phpValuationRate,
-    phpValuationSource: valuation.phpValuationSource,
-    phpValuationAutoPending: valuation.phpValuationAutoPending,
-    needsReview: valuation.needsReview,
-    reviewReasons: valuation.reviewReasons,
+    phpTaxValuation: values.phpTaxValuation
+      ? money(values.phpTaxValuation)
+      : values.currency === "PHP"
+        ? money(values.grossAmount)
+        : null,
+    phpValuationRate: values.phpValuationRate
+      ? money(values.phpValuationRate, 6)
+      : null,
+    phpValuationSource: values.phpValuationSource?.trim() || null,
+    needsReview: review.needsReview,
+    reviewReasons: review.reviewReasons,
     updatedAt: ts,
   };
 
@@ -227,28 +226,34 @@ export async function deleteIncome(id: string): Promise<void> {
   // Order numbers are never reused
 }
 
-/** Accept the stored (usually auto-calculated) PHP valuation permanently. */
-export async function finalizeIncomeValuation(
-  id: string,
-): Promise<IncomeTransaction> {
+/**
+ * Apply user-provided foreign→PHP rates to selected income transactions.
+ * Calculates phpTaxValuation = gross × rate for each.
+ */
+export async function bulkApplyPhpValuation(params: {
+  incomeIds: string[];
+  ratesByCurrency: BulkRateMap;
+}): Promise<number> {
   const db = getDb();
-  const existing = await db.incomes.get(id);
-  if (!existing) throw new Error("Income not found");
-  if (existing.currency === "PHP") return existing;
-  if (!existing.phpTaxValuation) {
-    throw new Error("Cannot finalize without a PHP tax valuation");
-  }
-
   const ts = nowISO();
-  const updated: IncomeTransaction = {
-    ...existing,
-    phpValuationAutoPending: false,
-    needsReview: false,
-    reviewReasons: [],
-    updatedAt: ts,
-  };
-  await db.incomes.put(updated);
-  return updated;
+  let updatedCount = 0;
+
+  await db.transaction("rw", db.incomes, async () => {
+    for (const id of params.incomeIds) {
+      const existing = await db.incomes.get(id);
+      if (!existing || existing.currency === "PHP") continue;
+      const patch = applyRateToIncome(existing, params.ratesByCurrency);
+      if (!patch) continue;
+      await db.incomes.put({
+        ...existing,
+        ...patch,
+        updatedAt: ts,
+      });
+      updatedCount += 1;
+    }
+  });
+
+  return updatedCount;
 }
 
 export async function createExpense(

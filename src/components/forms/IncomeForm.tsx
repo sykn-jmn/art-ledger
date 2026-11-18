@@ -9,14 +9,12 @@ import {
 } from "@/lib/validation/schemas";
 import { Button, Field, Input, Select, Textarea } from "@/components/ui/primitives";
 import { calculateIncomeFees } from "@/lib/calculations/fees";
-import { fetchPhpRateFromFrankfurter } from "@/lib/fx/frankfurter";
 import { formatMoney, money } from "@/lib/utils/money";
 import { formatOrderNumber } from "@/lib/utils/order-number";
 import { todayISO } from "@/lib/utils/dates";
 import {
   CURRENCIES,
   PAYMENT_METHOD_LABELS,
-  type CurrencyCode,
   type IncomeTransaction,
   type PaymentMethod,
 } from "@/types";
@@ -45,13 +43,6 @@ export function IncomeForm({
   const [saving, setSaving] = useState(false);
   const [showFees, setShowFees] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fxPreview, setFxPreview] = useState<{
-    phpAmount: string;
-    rate: string;
-    sourceLabel: string;
-    status: "idle" | "loading" | "ready" | "error";
-    message?: string;
-  }>({ phpAmount: "", rate: "", sourceLabel: "", status: "idle" });
 
   const form = useForm<IncomeFormValues>({
     resolver: zodResolver(incomeFormSchema),
@@ -71,12 +62,6 @@ export function IncomeForm({
   });
 
   const watch = form.watch();
-  const valuationBlank = !(watch.phpTaxValuation ?? "").trim();
-  const showAutoPreview =
-    watch.currency !== "PHP" &&
-    valuationBlank &&
-    Boolean(watch.grossAmount) &&
-    !Number.isNaN(Number(watch.grossAmount));
 
   const previewOrder = useMemo(() => {
     if (initial?.orderNumber) return initial.orderNumber;
@@ -124,56 +109,6 @@ export function IncomeForm({
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, onSecondary]);
-
-  useEffect(() => {
-    if (!showAutoPreview) {
-      setFxPreview((prev) =>
-        prev.status === "idle" ? prev : { ...prev, status: "idle", message: undefined },
-      );
-      return;
-    }
-
-    let cancelled = false;
-    const timer = window.setTimeout(async () => {
-      setFxPreview((prev) => ({ ...prev, status: "loading", message: undefined }));
-      try {
-        const result = await fetchPhpRateFromFrankfurter({
-          fromCurrency: watch.currency as CurrencyCode,
-          amount: money(watch.grossAmount),
-          onDate: watch.paymentDate || todayISO(),
-        });
-        if (cancelled) return;
-        setFxPreview({
-          phpAmount: result.phpAmount,
-          rate: result.rate,
-          sourceLabel: result.sourceLabel,
-          status: "ready",
-        });
-      } catch (e) {
-        if (cancelled) return;
-        setFxPreview({
-          phpAmount: "",
-          rate: "",
-          sourceLabel: "",
-          status: "error",
-          message:
-            e instanceof Error
-              ? e.message
-              : "Could not preview exchange rate. You can still save and retry, or enter PHP valuation manually.",
-        });
-      }
-    }, 400);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-    };
-  }, [
-    showAutoPreview,
-    watch.currency,
-    watch.grossAmount,
-    watch.paymentDate,
-  ]);
 
   const handlePrimary = async (values: IncomeFormValues) => {
     setSaving(true);
@@ -304,67 +239,27 @@ export function IncomeForm({
 
       {watch.currency !== "PHP" ? (
         <div className="flex flex-col gap-2">
-          <div className="rounded-lg border border-outline-variant/40 bg-surface-container-low/60 px-3 py-2.5 text-[12px] text-on-surface-variant leading-relaxed">
-            Leave PHP Tax Valuation blank to auto-calculate from the{" "}
-            <span className="font-medium text-on-surface">Frankfurter</span>{" "}
-            (ECB) exchange rate for the payment date. Auto-filled amounts stay
-            tagged <span className="font-medium text-on-surface">Needs review</span>{" "}
-            until you open the transaction and click{" "}
-            <span className="font-medium text-on-surface">Finalize</span>. Enter
-            your own PHP amount anytime to skip auto-fill and accept it
-            immediately.
-          </div>
-
-          {initial?.phpValuationAutoPending && initial.needsReview ? (
-            <div className="rounded bg-error-container/40 px-3 py-2 text-[12px] text-error">
-              This valuation was auto-calculated and is still pending. Saving
-              unchanged keeps Needs review — use Finalize on the transaction
-              details, or edit the PHP amount to confirm it yourself.
-            </div>
-          ) : null}
-
+          <p className="text-[12px] text-on-surface-variant leading-relaxed">
+            Optional now — leave blank to mark Needs review, then select
+            transactions in the list and use{" "}
+            <span className="font-medium text-on-surface">Set PHP valuation</span>{" "}
+            to apply an exchange rate in bulk.
+          </p>
           <div className="grid grid-cols-2 gap-3">
             <Field label="PHP Tax Valuation">
               <Input
                 inputMode="decimal"
-                placeholder="Blank = auto from Frankfurter"
+                placeholder="Optional — or bulk update later"
                 {...form.register("phpTaxValuation")}
               />
             </Field>
             <Field label="Valuation Rate / Source">
               <Input
-                placeholder="Auto-filled if left blank"
+                placeholder="e.g. BSP / manual"
                 {...form.register("phpValuationSource")}
               />
             </Field>
           </div>
-
-          {showAutoPreview ? (
-            <div className="rounded border border-dashed border-primary/30 bg-primary-fixed/20 px-3 py-2 text-[12px]">
-              {fxPreview.status === "loading" ? (
-                <p className="text-on-surface-variant">
-                  Fetching Frankfurter rate preview…
-                </p>
-              ) : null}
-              {fxPreview.status === "ready" ? (
-                <div className="flex flex-col gap-0.5">
-                  <p className="font-medium text-on-surface">
-                    Auto preview: {formatMoney(fxPreview.phpAmount, "PHP")}{" "}
-                    <span className="font-normal text-on-surface-variant">
-                      at rate {fxPreview.rate}
-                    </span>
-                  </p>
-                  <p className="text-[11px] text-on-surface-variant">
-                    {fxPreview.sourceLabel}. Saved as Needs review until
-                    finalized.
-                  </p>
-                </div>
-              ) : null}
-              {fxPreview.status === "error" ? (
-                <p className="text-error">{fxPreview.message}</p>
-              ) : null}
-            </div>
-          ) : null}
         </div>
       ) : null}
 

@@ -40,10 +40,6 @@ export function incomePhpGross(income: IncomeTransaction): {
   if (income.currency === "PHP") {
     return { amount: money(income.grossAmount), missing: false };
   }
-  // Auto-filled valuations stay provisional until the user finalizes them.
-  if (income.phpValuationAutoPending && income.needsReview) {
-    return { amount: "0.00", missing: true };
-  }
   if (income.phpTaxValuation !== null && income.phpTaxValuation !== "") {
     return { amount: money(income.phpTaxValuation), missing: false };
   }

@@ -19,7 +19,6 @@ function income(
       partial.currency === "PHP" ? partial.grossAmount : (partial.phpTaxValuation ?? null),
     phpValuationRate: null,
     phpValuationSource: null,
-    phpValuationAutoPending: false,
     needsReview: false,
     reviewReasons: [],
     createdAt: "",
@@ -125,26 +124,6 @@ describe("tax calculations", () => {
           currency: "USD",
           grossAmount: "1000.00",
           phpTaxValuation: null,
-        }),
-      ],
-      taxPayments: [],
-    });
-    expect(result.incomplete).toBe(true);
-    expect(result.grossIncome).toBe("0.00");
-  });
-
-  it("ignores auto-pending PHP valuation until finalized", () => {
-    const result = calculateAnnualTax({
-      year: 2024,
-      incomes: [
-        income({
-          id: "1",
-          paymentDate: "2024-03-01",
-          currency: "USD",
-          grossAmount: "1000.00",
-          phpTaxValuation: "56000.00",
-          phpValuationAutoPending: true,
-          needsReview: true,
         }),
       ],
       taxPayments: [],

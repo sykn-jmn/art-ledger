@@ -17,7 +17,6 @@ describe("revenue sharing", () => {
       phpTaxValuation: "100000.00",
       phpValuationRate: null,
       phpValuationSource: null,
-      phpValuationAutoPending: false,
       needsReview: false,
       reviewReasons: [],
       createdAt: "",

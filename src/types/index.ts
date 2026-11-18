@@ -52,8 +52,6 @@ export interface IncomeTransaction {
   phpTaxValuation: MoneyString | null;
   phpValuationRate: MoneyString | null;
   phpValuationSource: string | null;
-  /** True when PHP valuation was auto-filled and not yet finalized. */
-  phpValuationAutoPending: boolean;
   needsReview: boolean;
   reviewReasons: string[];
   createdAt: string;

@@ -16,7 +16,6 @@ describe("journal generation", () => {
     phpTaxValuation: "49657.00",
     phpValuationRate: null,
     phpValuationSource: null,
-    phpValuationAutoPending: false,
     needsReview: false,
     reviewReasons: [],
     createdAt: "",
