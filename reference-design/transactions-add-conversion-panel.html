@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#faf8ff", "inverse-on-surface": "#eef0ff", "tertiary": "#7e3000", "surface-dim": "#d2d9f4", "outline": "#777587", "inverse-primary": "#c3c0ff", "secondary-fixed-dim": "#b4c5ff", "tertiary-fixed": "#ffdbcc", "surface": "#faf8ff", "on-primary-container": "#dad7ff", "on-primary": "#ffffff", "on-primary-fixed": "#0f0069", "outline-variant": "#c7c4d8", "error": "#ba1a1a", "secondary": "#0051d5", "on-tertiary-container": "#ffd2be", "surface-container-lowest": "#ffffff", "primary": "#3525cd", "on-error": "#ffffff", "on-secondary-container": "#fefcff", "surface-container": "#eaedff", "secondary-container": "#316bf3", "on-error-container": "#93000a", "secondary-fixed": "#dbe1ff", "surface-container-high": "#e2e7ff", "on-primary-fixed-variant": "#3323cc", "tertiary-container": "#a44100", "on-tertiary": "#ffffff", "surface-variant": "#dae2fd", "on-background": "#131b2e", "on-surface": "#131b2e", "on-surface-variant": "#464555", "surface-bright": "#faf8ff", "on-tertiary-fixed-variant": "#7b2f00", "on-secondary": "#ffffff", "tertiary-fixed-dim": "#ffb695", "primary-fixed": "#e2dfff", "on-secondary-fixed-variant": "#003ea8", "surface-container-highest": "#dae2fd", "surface-tint": "#4d44e3", "on-secondary-fixed": "#00174b", "error-container": "#ffdad6", "primary-container": "#4f46e5", "surface-container-low": "#f2f3ff", "primary-fixed-dim": "#c3c0ff", "inverse-surface": "#283044", "on-tertiary-fixed": "#351000" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xl": "2rem", "space-lg": "1.25rem", "gutter": "1rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "space-md": "0.75rem" }, "fontFamily": { "display-mobile": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "mono-data": ["JetBrains Mono"], "label-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"] }, "fontSize": { "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.025em", "fontWeight": "700" }], "headline-lg-mobile": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.005em", "fontWeight": "400" }], "body-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "headline-sm": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "mono-data": ["12px", { "lineHeight": "16px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }], "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-60 bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-14 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-6 h-6 rounded bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[14px]">account_balance_wallet</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">ArtLedger</span></div><span class="font-mono-data text-[10px] text-on-surface-variant bg-surface-container px-space-xs py-0.5 rounded font-medium">PH-SEA</span></div><div class="px-space-md py-space-sm"><span class="px-space-sm font-label-sm text-label-sm text-outline uppercase tracking-wider">Workspace</span></div><nav class="flex flex-col gap-0.5 px-space-md" data-active-classes="bg-surface-container text-primary font-semibold"><a class="flex items-center gap-space-md px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors font-body-md text-body-md" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">grid_view</span><span>Dashboard</span></a><a aria-current="page" class="flex items-center justify-between px-space-sm py-2 rounded transition-colors bg-surface-container text-primary font-semibold" data-path="transactions" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span>Transactions</span></div><span class="w-2 h-2 rounded-full bg-primary"></span></a><a class="flex items-center gap-space-md px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors font-body-md text-body-md" data-path="currency-balances" href="#"><span class="material-symbols-outlined text-[18px]">payments</span><span>Currency Balances</span></a><a class="flex items-center gap-space-md px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors font-body-md text-body-md" data-path="books-of-accounts" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span>Books of Accounts</span></a><a class="flex items-center gap-space-md px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors font-body-md text-body-md" data-path="tax-summary" href="#"><span class="material-symbols-outlined text-[18px]">assessment</span><span>Tax Summary</span></a></nav><div class="mt-space-lg px-space-md py-space-sm"><span class="px-space-sm font-label-sm text-label-sm text-outline uppercase tracking-wider">System</span></div><nav class="flex flex-col gap-0.5 px-space-md" data-active-classes="bg-surface-container text-primary font-semibold"><a class="flex items-center gap-space-md px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span>Settings</span></a></nav></div><div class="p-space-md m-space-md rounded bg-surface-container-low"><div class="flex items-center justify-between mb-space-xs"><span class="font-label-sm text-label-sm text-outline uppercase">Archival State</span><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></div><p class="font-mono-data text-mono-data text-on-surface-variant truncate">Reg: BIR-2307 / SEA</p><p class="font-mono-data text-[10px] text-outline mt-0.5">Sync: 14s ago</p></div></aside><div class="pl-60"><header class="fixed top-0 left-60 right-0 h-14 bg-surface-container-lowest/90 backdrop-blur-xl z-40 flex items-center justify-between px-margin shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md flex-1 max-w-lg"><div class="flex items-center gap-space-sm w-full bg-surface-container-low px-space-md py-1.5 rounded text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-outline">search</span><input class="bg-transparent w-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search transactions, artists, or notes" type="text"/><kbd class="font-mono-data text-[10px] bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant font-medium">⌘K</kbd></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded text-on-surface-variant font-label-md text-label-md"><span class="material-symbols-outlined text-[16px] text-outline">calendar_today</span><span>2024 Q3</span><span class="material-symbols-outlined text-[16px] text-outline">arrow_drop_down</span></div><div class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-1 rounded"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-mono-data text-mono-data text-on-surface font-medium">USD/PHP: 58.42</span></div><div class="flex items-center gap-space-md pl-space-sm"><div class="flex flex-col text-right hidden sm:flex"><span class="font-label-sm text-label-sm text-on-surface font-semibold leading-tight">Curator Admin</span><span class="font-mono-data text-[10px] text-outline leading-tight">Manila, PH</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-14 px-margin bg-surface min-h-screen"><div class="flex flex-col w-full relative -mr-margin">
+<div class="w-full flex flex-col gap-space-lg select-none pointer-events-none opacity-40 transition-opacity duration-200">
+<div class="flex items-center justify-between">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Registry Ledger</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-mono-data text-mono-data text-outline">Q3-2024 · Active Batch</span>
+</div>
+<div class="flex items-baseline gap-space-md">
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Ledger Operations &amp; Settlements</h2>
+<span class="font-mono-data text-mono-data text-on-surface-variant bg-surface-container px-space-xs py-0.5 rounded">34 items recorded</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="bg-surface-container-lowest px-space-md py-1.5 rounded shadow-sm flex items-center gap-space-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span class="font-label-md text-label-md">Filter: All Currencies</span>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-space-md py-1.5 rounded flex items-center gap-space-xs shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Record Entry</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-gutter">
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">Total Settled (PHP)</span>
+<span class="material-symbols-outlined text-[16px] text-outline">payments</span>
+</div>
+<div class="font-mono-data text-[20px] font-semibold text-on-surface mt-1">₱ 4,892,100.00</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-outline mt-1">
+<span class="text-primary font-medium">+12.4%</span> vs prior cycle
+        </div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">Foreign Holdings</span>
+<span class="material-symbols-outlined text-[16px] text-outline">account_balance</span>
+</div>
+<div class="font-mono-data text-[20px] font-semibold text-on-surface mt-1">$ 1,690.50 USD</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-outline mt-1">
+<span>Spread across 2 payout channels</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">Consignment Inflow</span>
+<span class="material-symbols-outlined text-[16px] text-outline">inventory_2</span>
+</div>
+<div class="font-mono-data text-[20px] font-semibold text-on-surface mt-1">19 Pieces</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-outline mt-1">
+<span>Manila Contemporary Series</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">Avg Realized FX</span>
+<span class="material-symbols-outlined text-[16px] text-outline">trending_up</span>
+</div>
+<div class="font-mono-data text-[20px] font-semibold text-on-surface mt-1">56.24 PHP/USD</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-outline mt-1">
+<span class="text-primary font-medium">+0.8%</span> effective yield
+        </div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden flex flex-col">
+<div class="bg-surface-container-low px-space-md py-2 flex items-center justify-between">
+<div class="grid grid-cols-12 w-full font-label-sm text-label-sm text-outline uppercase tracking-wider">
+<div class="col-span-2">Date / Code</div>
+<div class="col-span-3">Artwork / Description</div>
+<div class="col-span-2">Artist / Partner</div>
+<div class="col-span-2">Channel</div>
+<div class="col-span-1 text-center">Status</div>
+<div class="col-span-2 text-right">Value (Local / FX)</div>
+</div>
+</div>
+<div class="divide-y divide-surface-container">
+<div class="px-space-md py-3 grid grid-cols-12 items-center hover:bg-surface-container-low">
+<div class="col-span-2 flex flex-col">
+<span class="font-mono-data text-mono-data text-on-surface font-medium">08/17/2024</span>
+<span class="font-mono-data text-[10px] text-outline">ART-2024-098</span>
+</div>
+<div class="col-span-3 flex items-center gap-space-sm min-w-0 pr-space-md">
+<img class="w-8 h-8 rounded object-cover shadow-sm shrink-0" data-alt="Minimalist abstract canvas painting with deep ultramarine blue textures and neutral sand tones framed in natural oak wood on a white gallery wall studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH12Au0cosMj_3rO2MyBwntjmdlMnmSuBi-Rm_30Ln2WvUH2cYyXyotdjfNlzC-QOnwvv8Ti9pEVXC3EK3EfqoA4y-qSjNW8iyFESQgFoqSTSKPU09XXXsVNHwxbGUVsKJte0mKQeamYJEhdgTCnNht2RKiiV3o-xJDGjaSZ4GOryQRABpqLyxRSVqU9dN4u3APpCh_mOvlRmBAah62j7YwSAw4z1k8H425VofSZ0"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Luminescence III</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Oil &amp; sand on linen · 120x150cm</span>
+</div>
+</div>
+<div class="col-span-2 font-body-md text-body-md text-on-surface-variant">Pacita Abad Estate</div>
+<div class="col-span-2 font-mono-data text-mono-data text-on-surface-variant">Stripe Int. (USD)</div>
+<div class="col-span-1 flex justify-center">
+<span class="bg-surface-container-high text-on-surface font-label-sm text-[10px] px-1.5 py-0.5 rounded">Settled</span>
+</div>
+<div class="col-span-2 flex flex-col text-right">
+<span class="font-mono-data text-mono-data text-on-surface font-semibold">₱ 280,000.00</span>
+<span class="font-mono-data text-[11px] text-outline">$ 4,800.00</span>
+</div>
+</div>
+<div class="px-space-md py-3 grid grid-cols-12 items-center hover:bg-surface-container-low">
+<div class="col-span-2 flex flex-col">
+<span class="font-mono-data text-mono-data text-on-surface font-medium">08/15/2024</span>
+<span class="font-mono-data text-[10px] text-outline">ART-2024-094</span>
+</div>
+<div class="col-span-3 flex items-center gap-space-sm min-w-0 pr-space-md">
+<img class="w-8 h-8 rounded object-cover shadow-sm shrink-0" data-alt="Geometric bronze sculpture with sharp angled faceted planes illuminated under soft gallery spotlights against an off-white concrete plinth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvkEk9XYEvSr5Zr4OzQudqbnD0T0zaNM0-adM7mscEgWbBxM1UdSBAKEQxm_NVQL9eRYAUNU6boSPHwhYgvMiDVWoctBydZRGYSW9xtMbDZWSRLCU_Wj2yNdnxr3MrGX-Cu3DuN9LmqcfYo4O8_xKP0WTK0kaP9B2_n5ZHT_k1_d4QVwpesqrIzC6fMtTw6iP24eEo3JuTuYATAvDkAgobl2OVUjS4UMERFVjMxnQ"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Structure Study No. 4</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Cast bronze, edition 2 of 5</span>
+</div>
+</div>
+<div class="col-span-2 font-body-md text-body-md text-on-surface-variant">Arturo Luz Archive</div>
+<div class="col-span-2 font-mono-data text-mono-data text-on-surface-variant">Bank Transfer (PHP)</div>
+<div class="col-span-1 flex justify-center">
+<span class="bg-surface-container-high text-on-surface font-label-sm text-[10px] px-1.5 py-0.5 rounded">Cleared</span>
+</div>
+<div class="col-span-2 flex flex-col text-right">
+<span class="font-mono-data text-mono-data text-on-surface font-semibold">₱ 450,000.00</span>
+<span class="font-mono-data text-[11px] text-outline">--</span>
+</div>
+</div>
+<div class="px-space-md py-3 grid grid-cols-12 items-center hover:bg-surface-container-low">
+<div class="col-span-2 flex flex-col">
+<span class="font-mono-data text-mono-data text-on-surface font-medium">08/12/2024</span>
+<span class="font-mono-data text-[10px] text-outline">FX-2024-041</span>
+</div>
+<div class="col-span-3 flex items-center gap-space-sm min-w-0 pr-space-md">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">currency_exchange</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Wise Currency Conversion</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Rate: 56.40 · Fee: $4.00</span>
+</div>
+</div>
+<div class="col-span-2 font-body-md text-body-md text-on-surface-variant">Wise Philippines</div>
+<div class="col-span-2 font-mono-data text-mono-data text-on-surface-variant">USD → PHP</div>
+<div class="col-span-1 flex justify-center">
+<span class="bg-surface-container-high text-on-surface font-label-sm text-[10px] px-1.5 py-0.5 rounded">Completed</span>
+</div>
+<div class="col-span-2 flex flex-col text-right">
+<span class="font-mono-data text-mono-data text-on-surface font-semibold">₱ 47,940.00</span>
+<span class="font-mono-data text-[11px] text-outline">- $ 850.00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed inset-0 bg-inverse-surface/20 z-40 backdrop-blur-[1px] transition-opacity" id="side-drawer-scrim"></div>
+<aside class="fixed top-0 right-0 h-full w-[490px] max-w-[95vw] bg-surface-container-lowest z-50 flex flex-col justify-between shadow-xl" id="conversion-drawer">
+<div class="flex flex-col h-full overflow-hidden">
+<div class="px-margin pt-space-lg pb-space-md bg-surface-container-lowest flex items-start justify-between">
+<div class="flex flex-col gap-1 pr-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">currency_exchange</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Treasury Operations</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Record Currency Conversion</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Transfer accumulated foreign funds into local currency</p>
+</div>
+<button class="w-8 h-8 rounded bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant transition-colors group" id="close-drawer-btn" title="Close Panel (Esc)">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="px-margin py-space-sm bg-surface-container-lowest">
+<div class="bg-surface-container-low p-1 rounded flex items-center gap-1">
+<button class="flex-1 py-1.5 px-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center gap-1" type="button">
+<span>Income</span>
+</button>
+<button class="flex-1 py-1.5 px-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center gap-1" type="button">
+<span>Expense</span>
+</button>
+<button class="flex-1 py-1.5 px-space-sm rounded bg-surface-container-lowest shadow-sm font-label-md text-label-md text-primary font-semibold flex items-center justify-center gap-1.5" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Conversion</span>
+</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-margin py-space-md flex flex-col gap-space-md">
+<div class="bg-surface-container-low p-space-md rounded flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase text-outline font-semibold">Available Unconverted Foreign Balances</span>
+<span class="font-mono-data text-[10px] text-primary font-medium bg-surface-container px-1 py-0.5 rounded">Live Ledger</span>
+</div>
+<div class="flex items-baseline gap-space-xs font-mono-data text-mono-data font-semibold text-on-surface">
+<span>USD: $1,240.50</span>
+<span class="text-outline font-normal">·</span>
+<span class="text-on-surface-variant font-medium">Wise: $450.00</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">
+            Converts accumulated balances from multiple commissions.
+          </p>
+</div>
+<form class="flex flex-col gap-space-md mt-1" id="currency-form" onsubmit="event.preventDefault()">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-medium flex items-center justify-between">
+<span>Conversion Date</span>
+<span class="font-mono-data text-[10px] text-outline">Manila PHT</span>
+</label>
+<div class="relative flex items-center">
+<input class="w-full h-9 bg-surface-container-low px-space-md rounded font-mono-data text-mono-data text-on-surface focus:outline-none focus:ring-1 focus:ring-primary pl-9" id="conv-date" type="text" value="08/18/2024"/>
+<span class="material-symbols-outlined text-[18px] text-outline absolute left-2.5 pointer-events-none">calendar_today</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase text-outline font-semibold">From Currency &amp; Amount</span>
+<span class="font-label-sm text-label-sm text-primary cursor-pointer hover:underline" id="convert-all-btn">Convert Maximum ($1,240.50)</span>
+</div>
+<div class="grid grid-cols-12 gap-space-sm items-center">
+<div class="col-span-5 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">From Currency</label>
+<div class="relative">
+<select class="w-full h-9 bg-surface-container-low px-space-md rounded font-label-md text-label-md text-on-surface appearance-none focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer pr-8" id="from-currency">
+<option selected="" value="USD">USD ($)</option>
+<option value="EUR">EUR (€)</option>
+<option value="SGD">SGD (S$)</option>
+</select>
+<span class="material-symbols-outlined text-[18px] text-outline absolute right-2 top-2 pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<div class="col-span-7 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Amount to Convert</label>
+<div class="relative flex items-center">
+<span class="absolute left-3 font-mono-data text-mono-data text-outline pointer-events-none">$</span>
+<input class="w-full h-9 bg-surface-container-low pl-7 pr-space-md text-right rounded font-mono-data text-mono-data text-on-surface font-semibold focus:outline-none focus:ring-1 focus:ring-primary" id="source-amount" type="text" value="600.00"/>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center -my-2 z-10">
+<div class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded shadow-sm">
+<span class="font-label-sm text-label-sm uppercase text-outline font-semibold">To Currency &amp; Amount</span>
+<div class="grid grid-cols-12 gap-space-sm items-center">
+<div class="col-span-5 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">To Currency</label>
+<div class="relative">
+<select class="w-full h-9 bg-surface-container-low px-space-md rounded font-label-md text-label-md text-on-surface appearance-none focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer pr-8" id="to-currency">
+<option selected="" value="PHP">PHP (₱)</option>
+<option value="SGD">SGD (S$)</option>
+</select>
+<span class="material-symbols-outlined text-[18px] text-outline absolute right-2 top-2 pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<div class="col-span-7 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Amount Received</label>
+<div class="relative flex items-center">
+<span class="absolute left-3 font-mono-data text-mono-data text-outline pointer-events-none">₱</span>
+<input class="w-full h-9 bg-surface-container-low pl-7 pr-space-md text-right rounded font-mono-data text-mono-data text-on-surface font-semibold focus:outline-none focus:ring-1 focus:ring-primary" id="target-amount" type="text" value="33,720.00"/>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container p-space-sm rounded flex items-center justify-between px-space-md">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">sync_alt</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Calculated Conversion</span>
+</div>
+<div class="font-mono-data text-mono-data font-semibold text-primary" id="rate-readout">
+              Effective Rate: 1 USD = ₱56.20 PHP
+            </div>
+</div>
+<div class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase text-outline font-semibold">Conversion Fee</span>
+<span class="font-mono-data text-[11px] text-outline">Wise Gateway Fee</span>
+</div>
+<div class="grid grid-cols-12 gap-space-sm items-center">
+<div class="col-span-5 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Fee Amount</label>
+<div class="relative flex items-center">
+<span class="absolute left-3 font-mono-data text-mono-data text-outline pointer-events-none">$</span>
+<input class="w-full h-9 bg-surface-container-low pl-7 pr-space-md text-right rounded font-mono-data text-mono-data text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" id="fee-amount" type="text" value="3.50"/>
+</div>
+</div>
+<div class="col-span-7 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Fee Treatment</label>
+<div class="relative">
+<select class="w-full h-9 bg-surface-container-low px-space-md rounded font-label-md text-label-md text-on-surface appearance-none focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer pr-8 truncate" id="fee-treatment">
+<option selected="" value="source">Deducted from source USD</option>
+<option value="separate">Charged separately</option>
+</select>
+<span class="material-symbols-outlined text-[18px] text-outline absolute right-2 top-2 pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-medium">Reference Number</label>
+<span class="font-label-sm text-label-sm text-outline">Optional</span>
+</div>
+<div class="relative flex items-center">
+<input class="w-full h-9 bg-surface-container-low px-space-md rounded font-mono-data text-mono-data text-on-surface focus:outline-none focus:ring-1 focus:ring-primary uppercase tracking-wider" id="ref-number" placeholder="e.g. WISE-TX-0000 or Bank Ref" type="text" value="WISE-TX-9941"/>
+<span class="material-symbols-outlined text-[16px] text-outline absolute right-2.5 pointer-events-none">tag</span>
+</div>
+</div>
+</form>
+</div>
+<div class="px-margin py-space-md bg-surface-container-lowest shadow-sm flex items-center justify-between gap-space-sm">
+<button class="h-9 px-space-md rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" id="discard-btn" type="button">
+          Discard
+        </button>
+<div class="flex items-center gap-space-sm">
+<button class="h-9 px-space-md rounded bg-surface-container-low hover:bg-surface-container font-label-md text-label-md text-on-surface font-medium transition-colors flex items-center gap-1.5" id="save-another-btn" type="button">
+<span>Save &amp; Add Another</span>
+<kbd class="font-mono-data text-[10px] text-outline bg-surface-container-lowest px-1 py-0.5 rounded">⌘↵</kbd>
+</button>
+<button class="h-9 px-space-lg rounded bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-semibold transition-colors flex items-center gap-1 shadow-sm" id="save-close-btn" type="button">
+<span>Save &amp; Close</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+<script>
+    (function() {
+      const sourceAmountInput = document.getElementById('source-amount');
+      const targetAmountInput = document.getElementById('target-amount');
+      const rateReadout = document.getElementById('rate-readout');
+      const convertAllBtn = document.getElementById('convert-all-btn');
+      const closeBtn = document.getElementById('close-drawer-btn');
+      const discardBtn = document.getElementById('discard-btn');
+      const saveCloseBtn = document.getElementById('save-close-btn');
+      const saveAnotherBtn = document.getElementById('save-another-btn');
+      const drawer = document.getElementById('conversion-drawer');
+      const scrim = document.getElementById('side-drawer-scrim');
+
+      function calculateEffectiveRate() {
+        const sourceVal = parseFloat(sourceAmountInput.value.replace(/,/g, ''));
+        const targetVal = parseFloat(targetAmountInput.value.replace(/,/g, ''));
+
+        if (!isNaN(sourceVal) && !isNaN(targetVal) && sourceVal > 0) {
+          const rate = (targetVal / sourceVal).toFixed(2);
+          rateReadout.textContent = `Effective Rate: 1 USD = ₱${rate} PHP`;
+        } else {
+          rateReadout.textContent = `Effective Rate: 1 USD = -- PHP`;
+        }
+      }
+
+      sourceAmountInput.addEventListener('input', function() {
+        const val = parseFloat(this.value.replace(/,/g, ''));
+        if (!isNaN(val)) {
+          const computedTarget = (val * 56.20).toFixed(2);
+          targetAmountInput.value = Number(computedTarget).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          calculateEffectiveRate();
+        }
+      });
+
+      targetAmountInput.addEventListener('input', calculateEffectiveRate);
+
+      convertAllBtn.addEventListener('click', function() {
+        sourceAmountInput.value = '1240.50';
+        const computedTarget = (1240.50 * 56.20).toFixed(2);
+        targetAmountInput.value = Number(computedTarget).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        calculateEffectiveRate();
+      });
+
+      function closeDrawer() {
+        drawer.style.transform = 'translateX(100%)';
+        drawer.style.transition = 'transform 180ms ease-in';
+        scrim.style.opacity = '0';
+        scrim.style.pointerEvents = 'none';
+        setTimeout(() => {
+          drawer.style.display = 'none';
+          scrim.style.display = 'none';
+        }, 180);
+      }
+
+      closeBtn.addEventListener('click', closeDrawer);
+      discardBtn.addEventListener('click', closeDrawer);
+      scrim.addEventListener('click', closeDrawer);
+
+      function handleSave() {
+        saveCloseBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span> <span>Saving...</span>';
+        setTimeout(() => {
+          closeDrawer();
+        }, 350);
+      }
+
+      saveCloseBtn.addEventListener('click', handleSave);
+
+      saveAnotherBtn.addEventListener('click', function() {
+        sourceAmountInput.value = '';
+        targetAmountInput.value = '';
+        rateReadout.textContent = 'Effective Rate: 1 USD = -- PHP';
+        sourceAmountInput.focus();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeDrawer();
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+          handleSave();
+        }
+      });
+    })();
+  </script>
+</div></main></div></body></html>

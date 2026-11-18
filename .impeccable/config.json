@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "plus jakarta sans",
+        "createdAt": "2026-11-18T08:17:31.716Z",
+        "reason": "reference-design HTML uses Plus Jakarta Sans as the ArtLedger brand face; implementation must match reference-design authority"
+      }
+    ]
+  }
+}

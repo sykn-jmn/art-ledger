@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#faf8ff", "surface-container": "#eaedff", "on-primary-container": "#dad7ff", "on-secondary-fixed-variant": "#003ea8", "outline-variant": "#c7c4d8", "tertiary": "#7e3000", "secondary-fixed": "#dbe1ff", "on-tertiary-container": "#ffd2be", "secondary-fixed-dim": "#b4c5ff", "tertiary-fixed": "#ffdbcc", "on-secondary-fixed": "#00174b", "on-primary-fixed-variant": "#3323cc", "surface-container-highest": "#dae2fd", "on-primary": "#ffffff", "inverse-primary": "#c3c0ff", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#7b2f00", "secondary": "#0051d5", "secondary-container": "#316bf3", "on-primary-fixed": "#0f0069", "tertiary-container": "#a44100", "on-secondary-container": "#fefcff", "on-surface-variant": "#464555", "tertiary-fixed-dim": "#ffb695", "on-error": "#ffffff", "surface-container-high": "#e2e7ff", "primary": "#3525cd", "primary-container": "#4f46e5", "error": "#ba1a1a", "on-tertiary-fixed": "#351000", "surface-container-low": "#f2f3ff", "primary-fixed-dim": "#c3c0ff", "primary-fixed": "#e2dfff", "inverse-surface": "#283044", "on-error-container": "#93000a", "on-surface": "#131b2e", "surface-bright": "#faf8ff", "on-secondary": "#ffffff", "error-container": "#ffdad6", "surface-variant": "#dae2fd", "surface-dim": "#d2d9f4", "inverse-on-surface": "#eef0ff", "surface": "#faf8ff", "surface-tint": "#4d44e3", "surface-container-lowest": "#ffffff", "on-background": "#131b2e", "outline": "#777587" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.25rem", "margin-mobile": "1rem", "gutter": "1rem", "gutter-mobile": "0.75rem", "space-xl": "2rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "space-md": "0.75rem", "margin": "1.5rem" }, "fontFamily": { "headline-lg-mobile": [ "Plus Jakarta Sans" ], "body-sm": [ "Plus Jakarta Sans" ], "mono-data": [ "JetBrains Mono" ], "label-md": [ "Plus Jakarta Sans" ], "body-lg": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "label-sm": [ "Plus Jakarta Sans" ], "display-mobile": [ "Plus Jakarta Sans" ], "headline-md": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "display": [ "Plus Jakarta Sans" ], "headline-sm": [ "Plus Jakarta Sans" ] }, "fontSize": { "headline-lg-mobile": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "body-sm": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.005em", "fontWeight": "400" } ], "mono-data": [ "12px", { "lineHeight": "16px", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" } ], "body-lg": [ "15px", { "lineHeight": "22px", "letterSpacing": "-0.005em", "fontWeight": "400" } ], "headline-lg": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-sm": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" } ], "display-mobile": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.025em", "fontWeight": "700" } ], "headline-md": [ "18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "body-md": [ "13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" } ], "display": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" } ], "headline-sm": [ "15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-14 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface">ArtLedger</span><span class="px-space-xs py-0.5 rounded bg-surface-container-high font-mono-data text-mono-data font-semibold text-primary">PH</span></div></div><div class="px-margin pt-space-md pb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Workspace</span></div><nav class="flex flex-col px-space-sm gap-0.5" data-active-classes="bg-surface-container text-primary font-headline-sm font-semibold"><a class="flex items-center gap-space-sm px-space-md py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">grid_view</span><span class="font-body-md text-body-md">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-md py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="transactions" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="font-body-md text-body-md">Transactions</span></a><a class="flex items-center gap-space-sm px-space-md py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="currency-balances" href="#"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span><span class="font-body-md text-body-md">Currency Balances</span></a><a class="flex items-center gap-space-sm px-space-md py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="books-of-accounts" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span class="font-body-md text-body-md">Books of Accounts</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2 rounded transition-colors bg-surface-container text-primary font-headline-sm font-semibold" data-path="tax-summary" href="#"><span class="material-symbols-outlined text-[18px]">calculate</span><span class="font-body-md text-body-md">Tax Summary</span></a></nav><div class="px-margin pt-space-lg pb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">System</span></div><nav class="flex flex-col px-space-sm gap-0.5" data-active-classes="bg-surface-container text-primary font-headline-sm font-semibold"><a class="flex items-center gap-space-sm px-space-md py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="p-space-md m-space-sm rounded bg-surface-container-low"><div class="flex items-center justify-between pb-space-xs"><span class="font-label-sm text-label-sm font-semibold text-on-surface">BIR Track: 8% Rate</span><span class="flex h-2 w-2 rounded-full bg-secondary"></span></div><div class="flex items-center justify-between text-on-surface-variant font-mono-data text-mono-data"><span>Self-Employed</span><span class="flex items-center gap-0.5 text-outline"><span class="material-symbols-outlined text-[14px]">sync</span>Synced</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest/90 backdrop-blur-xl z-40 px-margin flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center w-96"><div class="flex items-center w-full px-space-md py-1.5 rounded bg-surface-container-low text-on-surface-variant gap-space-sm"><span class="material-symbols-outlined text-[16px] text-outline">search</span><span class="font-body-sm text-body-sm text-outline flex-1 select-none">Search transactions, accounts, references...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-highest font-mono-data text-mono-data text-on-surface-variant text-[10px]">⌘K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-md py-1 rounded bg-surface-container-low text-on-surface"><span class="material-symbols-outlined text-[16px] text-outline">calendar_today</span><span class="font-label-md text-label-md font-medium">2024 Q3</span><span class="material-symbols-outlined text-[16px] text-outline">arrow_drop_down</span></div><div class="flex items-center gap-space-xs px-space-md py-1 rounded bg-surface-container-low font-mono-data text-mono-data"><span class="text-outline">USD/PHP</span><span class="font-semibold text-on-surface">58.42</span></div><button class="flex items-center gap-1.5 px-space-md py-1.5 rounded bg-primary text-on-primary hover:bg-primary-container transition-colors"><span class="material-symbols-outlined text-[16px]">add</span><span class="font-label-md text-label-md font-medium">Record Entry</span></button><div class="flex items-center gap-space-sm pl-space-sm"><div class="flex flex-col text-right"><span class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Curator Admin</span><span class="font-body-sm text-body-sm text-outline leading-tight">Manila, PH</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-14 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-margin py-space-lg flex flex-col gap-space-lg max-w-[1560px] mx-auto w-full"><!-- Header Section -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Tax Summary</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Your income and estimated tax for the selected year.</p>
+</div>
+<!-- Action Controls -->
+<div class="flex items-center gap-space-sm">
+<!-- Tax Year Selector -->
+<div class="relative inline-flex items-center">
+<button class="h-8 px-space-md rounded bg-surface-container-lowest shadow-sm flex items-center gap-space-xs font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors" id="year-toggle-btn">
+<span class="text-outline font-normal">Tax Year:</span>
+<span class="font-semibold text-primary">2024</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</button>
+</div>
+<!-- Unified Export Action -->
+<div class="relative">
+<button class="h-8 px-space-md rounded bg-surface-container-lowest shadow-sm flex items-center gap-1.5 font-label-md text-label-md font-medium text-on-surface hover:bg-surface-container-low transition-colors" id="export-dropdown-btn">
+<span class="material-symbols-outlined text-[16px] text-primary">ios_share</span>
+<span>Export</span>
+<span class="material-symbols-outlined text-[14px] text-outline">arrow_drop_down</span>
+</button>
+<div class="hidden absolute right-0 mt-1 w-44 bg-surface-container-lowest rounded shadow-md z-30 py-1 font-body-sm text-body-sm" id="export-menu">
+<a class="flex items-center gap-space-sm px-space-md py-1.5 hover:bg-surface-container-low text-on-surface" href="#">
+<span class="material-symbols-outlined text-[16px] text-outline">table_view</span>
+<span>Excel Spreadsheet</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-1.5 hover:bg-surface-container-low text-on-surface" href="#">
+<span class="material-symbols-outlined text-[16px] text-outline">print</span>
+<span>Print Summary</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 1: Annual Overview -->
+<div class="flex flex-col gap-space-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-gutter">
+<!-- Card 1: Gross Income -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Gross Income</span>
+<div class="my-space-xs">
+<div class="font-mono-data text-[24px] font-bold tracking-tight text-on-surface leading-tight">₱894,520.00</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-1">2024 Year-to-Date (Jan – Sep)</div>
+</div>
+</div>
+<!-- Card 2: Taxable Income -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Taxable Income</span>
+<div class="my-space-xs">
+<div class="font-mono-data text-[24px] font-bold tracking-tight text-on-surface leading-tight">₱644,520.00</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Income exceeding ₱250,000 threshold</div>
+</div>
+</div>
+<!-- Card 3: Estimated Tax -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Estimated Tax</span>
+<div class="my-space-xs">
+<div class="font-mono-data text-[24px] font-bold tracking-tight text-primary leading-tight">₱51,561.60</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Calculated at 8% rate</div>
+</div>
+</div>
+<!-- Card 4: Remaining Tax -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Remaining Tax</span>
+<div class="my-space-xs">
+<div class="font-mono-data text-[24px] font-bold tracking-tight text-primary leading-tight">₱22,825.60</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-1">After ₱28,736.00 recorded payments</div>
+</div>
+</div>
+</div>
+<!-- Compact Calculation Formula Line -->
+<div class="p-space-sm rounded bg-surface-container-low text-center font-mono-data text-[12px] text-on-surface-variant flex items-center justify-center gap-space-xs">
+<span>(Gross Income − ₱250,000) × 8% = Estimated Tax</span>
+<span class="text-outline">·</span>
+<span class="text-outline">Minimum taxable threshold: ₱0.00</span>
+</div>
+</div>
+<!-- Simplified Collapsible Tax Calculation Explanation -->
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden">
+<button class="w-full px-space-lg py-space-md flex items-center justify-between hover:bg-surface-container-low/40 transition-colors text-left" id="calc-guide-toggle">
+<div class="flex items-center gap-space-sm">
+<div class="w-6 h-6 rounded bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">calculate</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">How is my tax calculated?</span>
+</div>
+<div class="flex items-center gap-1 font-label-md text-label-md font-medium text-primary">
+<span id="calc-toggle-label">Show breakdown</span>
+<span class="material-symbols-outlined text-[18px] transition-transform" id="calc-toggle-icon">expand_more</span>
+</div>
+</button>
+<div class="hidden px-space-lg pb-space-lg pt-space-xs flex flex-col" id="calc-guide-content">
+<div class="max-w-xl bg-surface-container-low rounded p-space-md flex flex-col gap-space-xs font-mono-data text-mono-data">
+<div class="flex justify-between items-center py-1 text-on-surface">
+<span class="font-body-sm text-body-sm">Gross Income</span>
+<span class="font-semibold">₱894,520.00</span>
+</div>
+<div class="flex justify-between items-center py-1 text-secondary">
+<span class="font-body-sm text-body-sm">Less: ₱250,000 Deduction</span>
+<span class="font-semibold">−₱250,000.00</span>
+</div>
+<div class="h-px bg-outline-variant/30 my-0.5"></div>
+<div class="flex justify-between items-center py-1 text-on-surface">
+<span class="font-body-sm text-body-sm font-medium">Taxable Income</span>
+<span class="font-bold">₱644,520.00</span>
+</div>
+<div class="flex justify-between items-center py-1 text-primary">
+<span class="font-body-sm text-body-sm">Tax Rate</span>
+<span class="font-semibold">8%</span>
+</div>
+<div class="h-px bg-outline-variant/30 my-0.5"></div>
+<div class="flex justify-between items-center py-1 text-on-surface">
+<span class="font-body-sm text-body-sm font-medium">Estimated Tax</span>
+<span class="font-bold">₱51,561.60</span>
+</div>
+<div class="flex justify-between items-center py-1 text-outline">
+<span class="font-body-sm text-body-sm">Less: Recorded Tax Payments / Credits</span>
+<span class="font-semibold">−₱28,736.00</span>
+</div>
+<div class="h-px bg-outline-variant/50 my-1"></div>
+<div class="flex justify-between items-center py-1.5 bg-surface-container rounded px-space-sm text-primary font-bold">
+<span class="font-body-md text-body-md">Remaining Estimated Tax</span>
+<span class="text-[16px]">₱22,825.60</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Monthly Income Summary Table -->
+<div class="bg-surface-container-lowest rounded shadow-sm flex flex-col overflow-hidden" id="section-monthly-income">
+<div class="p-space-lg flex items-center justify-between border-b border-surface-container">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Monthly Income Summary</h2>
+<span class="text-outline font-body-sm text-body-sm">Hover month to view transactions</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm border-b border-surface-container">
+<th class="py-2.5 px-space-md font-semibold">Month</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Gross Income</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Revenue Share (10%)</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Quarterly Subtotal</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low font-body-sm text-body-sm font-mono-data">
+<!-- Jan -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">January</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱54,200.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱5,420.00</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+<!-- Feb -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">February</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱62,100.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱6,210.00</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+<!-- Mar -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">March</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱64,100.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱6,410.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱180,400.00</td>
+</tr>
+<!-- Q1 Subtotal -->
+<tr class="bg-surface-container-high/40 font-bold text-on-surface">
+<td class="py-2 px-space-md font-sans">Q1 Subtotal</td>
+<td class="py-2 px-space-md text-right">₱180,400.00</td>
+<td class="py-2 px-space-md text-right">₱18,040.00</td>
+<td class="py-2 px-space-md text-right text-primary">₱180,400.00</td>
+</tr>
+<!-- Apr -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">April</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱112,400.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱11,240.00</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+<!-- May -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">May</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱185,000.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱18,500.00</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+<!-- Jun -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">June</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱131,400.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱13,140.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱428,800.00</td>
+</tr>
+<!-- Q2 Subtotal -->
+<tr class="bg-surface-container-high/40 font-bold text-on-surface">
+<td class="py-2 px-space-md font-sans">Q2 Subtotal</td>
+<td class="py-2 px-space-md text-right">₱428,800.00</td>
+<td class="py-2 px-space-md text-right">₱42,880.00</td>
+<td class="py-2 px-space-md text-right text-primary">₱428,800.00</td>
+</tr>
+<!-- Jul -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">July</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱92,500.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,250.00</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+<!-- Aug -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans text-on-surface">August</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱98,420.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,842.00</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+<!-- Sep -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer" title="Click to view transactions">
+<td class="py-2 px-space-md font-sans font-medium text-on-surface flex items-center gap-1.5">
+<span>September</span>
+<span class="px-1 py-0.2 rounded bg-tertiary-fixed text-[9px] text-tertiary font-sans font-semibold">Current</span>
+</td>
+<td class="py-2 px-space-md text-right text-on-surface font-semibold">₱94,400.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,440.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱285,320.00</td>
+</tr>
+<!-- Q3 Subtotal -->
+<tr class="bg-surface-container-high/40 font-bold text-on-surface">
+<td class="py-2 px-space-md font-sans">Q3 Subtotal</td>
+<td class="py-2 px-space-md text-right">₱285,320.00</td>
+<td class="py-2 px-space-md text-right">₱28,532.00</td>
+<td class="py-2 px-space-md text-right text-primary">₱285,320.00</td>
+</tr>
+<!-- Oct – Dec -->
+<tr class="opacity-50">
+<td class="py-2 px-space-md font-sans text-on-surface-variant">October – December</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+<td class="py-2 px-space-md text-right text-outline">—</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-surface-container-low font-mono-data text-mono-data font-bold text-on-surface">
+<td class="py-2.5 px-space-md font-sans">Year-to-Date Total (Jan – Sep)</td>
+<td class="py-2.5 px-space-md text-right">₱894,520.00</td>
+<td class="py-2.5 px-space-md text-right">₱89,452.00</td>
+<td class="py-2.5 px-space-md text-right text-primary">₱894,520.00</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+<!-- Section 3: Quarterly Tax Summary Table -->
+<div class="bg-surface-container-lowest rounded shadow-sm flex flex-col overflow-hidden" id="section-quarterly-tax">
+<div class="p-space-lg border-b border-surface-container">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Quarterly Tax Summary</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm border-b border-surface-container">
+<th class="py-2.5 px-space-md font-semibold">Quarter</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Gross Income</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Cumulative Income</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Estimated Tax</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Tax Paid</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Remaining</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low font-body-sm text-body-sm font-mono-data">
+<!-- Q1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-2.5 px-space-md font-sans font-medium text-on-surface">Q1 (Jan 1 – Mar 31)</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱180,400.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱180,400.00</td>
+<td class="py-2.5 px-space-md text-right text-outline">₱0.00 <span class="text-[11px] text-secondary font-sans">(Below ₱250k)</span></td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱0.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱0.00</td>
+</tr>
+<!-- Q2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-2.5 px-space-md font-sans font-medium text-on-surface">Q2 (Apr 1 – Jun 30)</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱428,800.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱609,200.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱28,736.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱28,736.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface">₱0.00</td>
+</tr>
+<!-- Q3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors bg-primary/5">
+<td class="py-2.5 px-space-md font-sans font-semibold text-primary flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Q3 (Jul 1 – Sep 30)</span>
+</td>
+<td class="py-2.5 px-space-md text-right text-on-surface font-semibold">₱285,320.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface font-semibold">₱894,520.00</td>
+<td class="py-2.5 px-space-md text-right text-on-surface font-semibold">₱51,561.60</td>
+<td class="py-2.5 px-space-md text-right text-outline">₱28,736.00</td>
+<td class="py-2.5 px-space-md text-right text-primary font-bold">₱22,825.60</td>
+</tr>
+<!-- Q4 -->
+<tr class="opacity-50">
+<td class="py-2.5 px-space-md font-sans text-on-surface-variant">Q4 (Oct 1 – Dec 31)</td>
+<td class="py-2.5 px-space-md text-right text-outline">—</td>
+<td class="py-2.5 px-space-md text-right text-outline">—</td>
+<td class="py-2.5 px-space-md text-right text-outline">—</td>
+<td class="py-2.5 px-space-md text-right text-outline">—</td>
+<td class="py-2.5 px-space-md text-right text-outline">—</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-surface-container-low font-mono-data text-mono-data font-bold text-on-surface">
+<td class="py-2.5 px-space-md font-sans">Total YTD (Jan – Sep)</td>
+<td class="py-2.5 px-space-md text-right">₱894,520.00</td>
+<td class="py-2.5 px-space-md text-right">₱894,520.00</td>
+<td class="py-2.5 px-space-md text-right">₱51,561.60</td>
+<td class="py-2.5 px-space-md text-right">₱28,736.00</td>
+<td class="py-2.5 px-space-md text-right text-primary text-[14px]">₱22,825.60</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+<!-- Section 4: Revenue Share (10%) -->
+<div class="bg-surface-container-lowest rounded shadow-sm flex flex-col overflow-hidden" id="section-revenue-share">
+<div class="p-space-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm border-b border-surface-container">
+<div class="flex items-center gap-space-sm">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Revenue Share (10%)</h2>
+</div>
+<button class="flex items-center gap-1 font-label-md text-label-md font-medium text-primary hover:underline self-start sm:self-auto" id="rev-share-toggle">
+<span id="rev-toggle-label">View payments breakdown</span>
+<span class="material-symbols-outlined text-[18px] transition-transform" id="rev-toggle-icon">expand_more</span>
+</button>
+</div>
+<!-- Compact Summary Line -->
+<div class="px-space-lg py-space-md bg-surface-container-low/40 border-b border-surface-container text-body-sm font-mono-data text-on-surface-variant flex flex-wrap items-center gap-space-sm">
+<span>Calculated Share YTD: <strong class="text-on-surface">₱89,452.00</strong></span>
+<span class="text-outline">·</span>
+<span>Disbursed: <strong class="text-on-surface">₱80,512.00</strong></span>
+<span class="text-outline">·</span>
+<span>Outstanding Balance: <strong class="text-tertiary">₱8,940.00</strong></span>
+</div>
+<!-- Collapsible Payments Table -->
+<div class="hidden overflow-x-auto" id="rev-share-content">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm border-b border-surface-container">
+<th class="py-2.5 px-space-md font-semibold">Month</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Calculated Share</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Amount Paid</th>
+<th class="py-2.5 px-space-md font-semibold text-right">Remaining Balance</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low font-body-sm text-body-sm font-mono-data">
+<!-- Q1 Total -->
+<tr class="hover:bg-surface-container-low/50">
+<td class="py-2 px-space-md font-sans font-medium text-on-surface">Q1 Total</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱18,040.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱18,040.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱0.00</td>
+</tr>
+<!-- Q2 Total -->
+<tr class="hover:bg-surface-container-low/50">
+<td class="py-2 px-space-md font-sans font-medium text-on-surface">Q2 Total</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱42,880.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱42,880.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱0.00</td>
+</tr>
+<!-- July 2024 -->
+<tr class="hover:bg-surface-container-low/50">
+<td class="py-2 px-space-md font-sans text-on-surface">July 2024</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,250.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,250.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱0.00</td>
+</tr>
+<!-- August 2024 -->
+<tr class="hover:bg-surface-container-low/50">
+<td class="py-2 px-space-md font-sans text-on-surface">August 2024</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,842.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱9,842.00</td>
+<td class="py-2 px-space-md text-right text-outline">₱0.00</td>
+</tr>
+<!-- September 2024 -->
+<tr class="hover:bg-surface-container-low/50 bg-tertiary-fixed/30">
+<td class="py-2 px-space-md font-sans font-medium text-on-surface">September 2024</td>
+<td class="py-2 px-space-md text-right text-on-surface font-semibold">₱9,440.00</td>
+<td class="py-2 px-space-md text-right text-on-surface">₱500.00</td>
+<td class="py-2 px-space-md text-right text-tertiary font-bold">₱8,940.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Understated Reference Note Footer -->
+<div class="p-space-md rounded bg-surface-container-lowest shadow-sm flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-outline text-[18px]">info</span>
+<span>Figures are calculated estimates for personal tax planning and physical book reference. Reconciled with recorded 2024 transactions.</span>
+</div>
+</div></div>
+</div>
+<script>
+  (function() {
+    // Collapsible Tax Calculation Guide
+    const toggleBtn = document.getElementById('calc-guide-toggle');
+    const content = document.getElementById('calc-guide-content');
+    const label = document.getElementById('calc-toggle-label');
+    const icon = document.getElementById('calc-toggle-icon');
+
+    if (toggleBtn && content) {
+      toggleBtn.addEventListener('click', function() {
+        const isHidden = content.classList.contains('hidden');
+        if (isHidden) {
+          content.classList.remove('hidden');
+          label.textContent = 'Hide details';
+          icon.textContent = 'expand_less';
+        } else {
+          content.classList.add('hidden');
+          label.textContent = 'Show breakdown';
+          icon.textContent = 'expand_more';
+        }
+      });
+    }
+
+    // View Segmented Controls
+    const viewButtons = document.querySelectorAll('.view-btn');
+    const schedSection = document.getElementById('section-schedule');
+    const revSection = document.getElementById('section-revenue-share');
+
+    viewButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        viewButtons.forEach(b => {
+          b.classList.remove('bg-surface-container-lowest', 'shadow-sm', 'font-semibold', 'text-primary');
+          b.classList.add('text-on-surface-variant', 'font-medium');
+        });
+        this.classList.add('bg-surface-container-lowest', 'shadow-sm', 'font-semibold', 'text-primary');
+        this.classList.remove('text-on-surface-variant', 'font-medium');
+
+        const target = this.dataset.target;
+        if (target === 'all') {
+          schedSection.classList.remove('hidden');
+          revSection.classList.remove('hidden');
+        } else if (target === 'schedule') {
+          schedSection.classList.remove('hidden');
+          revSection.classList.add('hidden');
+        } else if (target === 'revenue-share') {
+          schedSection.classList.add('hidden');
+          revSection.classList.remove('hidden');
+        }
+      });
+    });
+
+    // Export Dropdown Toggle
+    const exportBtn = document.getElementById('export-dropdown-btn');
+    const exportMenu = document.getElementById('export-menu');
+
+    if (exportBtn && exportMenu) {
+      exportBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        exportMenu.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', function() {
+        if (!exportMenu.classList.contains('hidden')) {
+          exportMenu.classList.add('hidden');
+        }
+      });
+    }
+  })();
+</script></main></div></body></html>
