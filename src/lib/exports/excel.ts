@@ -5,7 +5,6 @@ import type {
   MonthlyIncomeRow,
   QuarterlyTaxRow,
 } from "@/lib/calculations/taxes";
-import type { RevenueShareMonth } from "@/lib/calculations/revenue-share";
 import { formatDisplayDate } from "@/lib/utils/dates";
 
 function downloadBuffer(buffer: ArrayBuffer, filename: string) {
@@ -150,7 +149,6 @@ export async function exportTaxSummaryXlsx(params: {
   annual: AnnualTaxSummary;
   monthly: MonthlyIncomeRow[];
   quarterly: QuarterlyTaxRow[];
-  revenueShare: RevenueShareMonth[];
 }): Promise<void> {
   const wb = new ExcelJS.Workbook();
   const overview = wb.addWorksheet("Annual Overview");
@@ -169,13 +167,12 @@ export async function exportTaxSummaryXlsx(params: {
   }
 
   const monthly = wb.addWorksheet("Monthly Income");
-  monthly.addRow(["Month", "Gross Income", "Calculated Revenue Share", "Missing Valuation"]);
+  monthly.addRow(["Month", "Gross Income", "Missing Valuation"]);
   styleHeader(monthly.getRow(1));
   for (const m of params.monthly) {
     monthly.addRow([
       m.monthName,
       m.grossIncomePhp,
-      m.calculatedShare,
       m.hasMissingValuation ? "Yes" : "",
     ]);
   }
@@ -198,25 +195,6 @@ export async function exportTaxSummaryXlsx(params: {
       q.cumulativeEstimatedTax,
       q.taxPaid,
       q.remainingEstimatedTax,
-    ]);
-  }
-
-  const share = wb.addWorksheet("Revenue Sharing");
-  share.addRow([
-    "Month",
-    "Monthly Gross",
-    "Calculated Share",
-    "Actual Paid",
-    "Outstanding",
-  ]);
-  styleHeader(share.getRow(1));
-  for (const r of params.revenueShare) {
-    share.addRow([
-      r.monthName,
-      r.monthlyGross,
-      r.calculatedShare,
-      r.actualPaid,
-      r.outstanding,
     ]);
   }
 

@@ -133,7 +133,7 @@ export default function SettingsPage() {
       <Card className="p-5 flex flex-col gap-3">
         <SectionHeading
           className="font-semibold text-[15px]"
-          info="Sets the next order/OR number for new income, the default currency on forms, and the revenue-share percentage used in Tax Summary. Changing the starting number does not renumber existing transactions."
+          info="Sets the next order/OR number for new income, the default currency on forms, and the revenue-share percentage used on the Dashboard. Changing the starting number does not renumber existing transactions."
         >
           Order numbering & defaults
         </SectionHeading>

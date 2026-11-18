@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { AlertTriangle, Plus } from "lucide-react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Badge, Button, Card } from "@/components/ui/primitives";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { calculateAnnualTax } from "@/lib/calculations/taxes";
+import { calculateRevenueShare } from "@/lib/calculations/revenue-share";
+import { calculateAnnualTax, formatPhp } from "@/lib/calculations/taxes";
 import { formatMoney } from "@/lib/utils/money";
 import { getYear, inYearQuarter } from "@/lib/utils/dates";
 
@@ -13,6 +15,7 @@ export default function DashboardPage() {
   const { ready, settings, incomes, expenses, conversions } = useDb();
   const year = settings?.selectedYear ?? new Date().getFullYear();
   const quarter = settings?.selectedQuarter ?? "all";
+  const percent = settings?.revenueSharePercent ?? "10";
 
   const scopedIncomes = incomes.filter((i) =>
     inYearQuarter(i.paymentDate, year, quarter),
@@ -38,6 +41,17 @@ export default function DashboardPage() {
     (i) => i.needsReview && getYear(i.paymentDate) === year,
   );
 
+  const revenueShare = useMemo(
+    () =>
+      calculateRevenueShare({
+        incomes,
+        expenses,
+        year,
+        percent,
+      }),
+    [incomes, expenses, year, percent],
+  );
+
   if (!ready) {
     return <p className="text-on-surface-variant">Loading local ledger…</p>;
   }
@@ -49,7 +63,7 @@ export default function DashboardPage() {
           <SectionHeading
             as="h1"
             className="text-[24px] font-bold tracking-tight"
-            info="Overview of transaction volume, gross income, estimated tax, and items needing review for the selected year and quarter. Use it as a starting point before entering transactions or checking books and tax detail."
+            info="Overview of transaction volume, gross income, estimated tax, revenue-share tracking, and items needing review for the selected year and quarter. Use it as a starting point before entering transactions or checking books and tax detail."
           >
             Dashboard
           </SectionHeading>
@@ -142,6 +156,51 @@ export default function DashboardPage() {
           </ul>
         </Card>
       ) : null}
+
+      <section className="flex flex-col gap-2">
+        <SectionHeading
+          info={`Compares the calculated ${percent}% partner share of each month’s gross income against revenue-share expenses you actually recorded. Calculated share is informational only — it does not create a payment or change balances. Only recorded revenue-share expenses affect Currency Balances and the Cash Disbursements Journal.`}
+        >
+          Revenue Sharing ({percent}%)
+        </SectionHeading>
+        <Card className="overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left min-w-[700px]">
+              <thead>
+                <tr className="bg-surface-container-low text-[11px] uppercase text-outline">
+                  <th className="px-4 py-2">Month</th>
+                  <th className="px-4 py-2 text-right">Monthly Gross</th>
+                  <th className="px-4 py-2 text-right">Calculated Share</th>
+                  <th className="px-4 py-2 text-right">Actual Paid</th>
+                  <th className="px-4 py-2 text-right">Outstanding</th>
+                </tr>
+              </thead>
+              <tbody>
+                {revenueShare.map((r) => (
+                  <tr
+                    key={r.monthIndex}
+                    className="border-t border-outline-variant/20 font-mono text-[12px]"
+                  >
+                    <td className="px-4 py-2 font-sans">{r.monthName}</td>
+                    <td className="px-4 py-2 text-right">
+                      {formatPhp(r.monthlyGross)}
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      {formatPhp(r.calculatedShare)}
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      {formatPhp(r.actualPaid)}
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      {formatPhp(r.outstanding)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </section>
     </div>
   );
 }

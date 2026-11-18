@@ -12,13 +12,12 @@ import {
   calculateQuarterlyTax,
   formatPhp,
 } from "@/lib/calculations/taxes";
-import { calculateRevenueShare } from "@/lib/calculations/revenue-share";
 import { exportTaxSummaryXlsx } from "@/lib/exports/excel";
 import { createTaxPayment, deleteTaxPayment } from "@/db/transactions";
 import { todayISO } from "@/lib/utils/dates";
 
 export default function TaxSummaryPage() {
-  const { ready, settings, incomes, expenses, taxPayments } = useDb();
+  const { ready, settings, incomes, taxPayments } = useDb();
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [payAmount, setPayAmount] = useState("");
   const [payPeriod, setPayPeriod] = useState<"Q1" | "Q2" | "Q3" | "Q4" | "annual">(
@@ -64,17 +63,6 @@ export default function TaxSummaryPage() {
     [incomes, taxPayments, year, deduction, rate],
   );
 
-  const revenueShare = useMemo(
-    () =>
-      calculateRevenueShare({
-        incomes,
-        expenses,
-        year,
-        percent,
-      }),
-    [incomes, expenses, year, percent],
-  );
-
   if (!ready) return <p>Loading…</p>;
 
   return (
@@ -84,7 +72,7 @@ export default function TaxSummaryPage() {
           <SectionHeading
             as="h1"
             className="text-[24px] font-bold tracking-tight"
-            info="Planning view of gross income, taxable income, estimated tax, payments, monthly income, quarterly progress, and revenue-share tracking for the selected year. Figures use your Settings assumptions and are not an official BIR return."
+            info="Planning view of gross income, taxable income, estimated tax, payments, monthly income, and quarterly progress for the selected year. Figures use your Settings assumptions and are not an official BIR return. Revenue-share tracking lives on the Dashboard."
           >
             Tax Summary
           </SectionHeading>
@@ -103,7 +91,6 @@ export default function TaxSummaryPage() {
                 annual,
                 monthly,
                 quarterly,
-                revenueShare,
               })
             }
           >
@@ -201,7 +188,7 @@ export default function TaxSummaryPage() {
       </Card>
 
       <section className="flex flex-col gap-2">
-        <SectionHeading info="Month-by-month gross income in PHP for the selected tax year, plus the calculated revenue-share amount from your settings percentage. Foreign income without a PHP valuation is marked incomplete and can understate totals.">
+        <SectionHeading info="Month-by-month gross income in PHP for the selected tax year. Foreign income without a PHP valuation is marked incomplete and can understate totals.">
           Monthly Income
         </SectionHeading>
         <Card className="overflow-hidden">
@@ -211,7 +198,6 @@ export default function TaxSummaryPage() {
                 <tr className="bg-surface-container-low text-[11px] uppercase text-outline">
                   <th className="px-4 py-2">Month</th>
                   <th className="px-4 py-2 text-right">Gross Income</th>
-                  <th className="px-4 py-2 text-right">Calculated Revenue Share</th>
                 </tr>
               </thead>
               <tbody>
@@ -228,9 +214,6 @@ export default function TaxSummaryPage() {
                     </td>
                     <td className="px-4 py-2 text-right">
                       {formatPhp(m.grossIncomePhp)}
-                    </td>
-                    <td className="px-4 py-2 text-right">
-                      {formatPhp(m.calculatedShare)}
                     </td>
                   </tr>
                 ))}
@@ -350,48 +333,6 @@ export default function TaxSummaryPage() {
         </ul>
       </section>
 
-      <section className="flex flex-col gap-2">
-        <SectionHeading info={`Compares the calculated ${percent}% partner share of each month’s gross income against revenue-share expenses you actually recorded. Calculated share is informational only — it does not create a payment or change balances. Only recorded revenue-share expenses affect Currency Balances and the Cash Disbursements Journal.`}>
-          Revenue Sharing ({percent}%)
-        </SectionHeading>
-        <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[700px]">
-              <thead>
-                <tr className="bg-surface-container-low text-[11px] uppercase text-outline">
-                  <th className="px-4 py-2">Month</th>
-                  <th className="px-4 py-2 text-right">Monthly Gross</th>
-                  <th className="px-4 py-2 text-right">Calculated Share</th>
-                  <th className="px-4 py-2 text-right">Actual Paid</th>
-                  <th className="px-4 py-2 text-right">Outstanding</th>
-                </tr>
-              </thead>
-              <tbody>
-                {revenueShare.map((r) => (
-                  <tr
-                    key={r.monthIndex}
-                    className="border-t border-outline-variant/20 font-mono text-[12px]"
-                  >
-                    <td className="px-4 py-2 font-sans">{r.monthName}</td>
-                    <td className="px-4 py-2 text-right">
-                      {formatPhp(r.monthlyGross)}
-                    </td>
-                    <td className="px-4 py-2 text-right">
-                      {formatPhp(r.calculatedShare)}
-                    </td>
-                    <td className="px-4 py-2 text-right">
-                      {formatPhp(r.actualPaid)}
-                    </td>
-                    <td className="px-4 py-2 text-right">
-                      {formatPhp(r.outstanding)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </section>
     </div>
   );
 }
