@@ -37,6 +37,7 @@ const income = (
   phpTaxValuation: currency === "PHP" ? net : null,
   phpValuationRate: null,
   phpValuationSource: null,
+  phpValuationAutoPending: false,
   needsReview: false,
   reviewReasons: [],
   createdAt: "",

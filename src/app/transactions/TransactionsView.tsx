@@ -18,12 +18,14 @@ import {
   deleteConversion,
   deleteExpense,
   deleteIncome,
+  finalizeIncomeValuation,
 } from "@/db/transactions";
 import { formatDisplayDate, inYearQuarter } from "@/lib/utils/dates";
 import { add, formatMoney } from "@/lib/utils/money";
 import {
   EXPENSE_CATEGORY_LABELS,
   PAYMENT_METHOD_LABELS,
+  type IncomeTransaction,
   type TransactionType,
 } from "@/types";
 
@@ -43,6 +45,11 @@ type UnifiedRow = {
   paymentMethod?: string;
   category?: string;
   needsReview: boolean;
+  reviewReasons?: string[];
+  phpTaxValuation?: string | null;
+  phpValuationRate?: string | null;
+  phpValuationSource?: string | null;
+  phpValuationAutoPending?: boolean;
 };
 
 export default function TransactionsPage() {
@@ -90,6 +97,11 @@ export default function TransactionsPage() {
         currency: i.currency,
         paymentMethod: i.paymentMethod,
         needsReview: i.needsReview,
+        reviewReasons: i.reviewReasons,
+        phpTaxValuation: i.phpTaxValuation,
+        phpValuationRate: i.phpValuationRate,
+        phpValuationSource: i.phpValuationSource,
+        phpValuationAutoPending: i.phpValuationAutoPending,
       });
     }
 
@@ -169,6 +181,29 @@ export default function TransactionsPage() {
     setSelected(null);
   };
 
+  const selectedIncome: IncomeTransaction | null =
+    selected?.type === "income"
+      ? (incomes.find((i) => i.id === selected.id) ?? null)
+      : null;
+
+  const handleFinalize = async (row: UnifiedRow) => {
+    if (row.type !== "income") return;
+    const refreshed = await finalizeIncomeValuation(row.id);
+    setSelected((prev) =>
+      prev && prev.id === row.id
+        ? {
+            ...prev,
+            needsReview: refreshed.needsReview,
+            reviewReasons: refreshed.reviewReasons,
+            phpValuationAutoPending: refreshed.phpValuationAutoPending,
+            phpTaxValuation: refreshed.phpTaxValuation,
+            phpValuationRate: refreshed.phpValuationRate,
+            phpValuationSource: refreshed.phpValuationSource,
+          }
+        : prev,
+    );
+  };
+
   const handleDuplicate = async (row: UnifiedRow) => {
     if (row.type === "income") {
       const record = incomes.find((i) => i.id === row.id);
@@ -180,9 +215,7 @@ export default function TransactionsPage() {
         currency: record.currency,
         grossAmount: record.grossAmount,
         paymentMethod: record.paymentMethod,
-        phpTaxValuation: record.phpTaxValuation ?? undefined,
-        phpValuationRate: record.phpValuationRate ?? undefined,
-        phpValuationSource: record.phpValuationSource ?? undefined,
+        // Omit valuation so duplicate re-runs Frankfurter auto-fill + needs review
       });
     } else if (row.type === "expense") {
       const record = expenses.find((e) => e.id === row.id);
@@ -389,7 +422,11 @@ export default function TransactionsPage() {
                             {row.description}
                           </div>
                           {row.needsReview ? (
-                            <Badge tone="warn">Needs review</Badge>
+                            <Badge tone="warn">
+                              {row.phpValuationAutoPending
+                                ? "Needs review · auto valuation"
+                                : "Needs review"}
+                            </Badge>
                           ) : null}
                         </td>
                         <td className="px-4 py-2.5 text-right font-mono text-[12px]">
@@ -489,7 +526,61 @@ export default function TransactionsPage() {
                   {selected.netLabel}
                 </dd>
               </div>
+              {selected.type === "income" && selected.currency !== "PHP" ? (
+                <>
+                  <div>
+                    <dt className="text-[11px] uppercase text-outline">
+                      PHP Tax Valuation
+                    </dt>
+                    <dd className="font-mono">
+                      {selected.phpTaxValuation
+                        ? formatMoney(selected.phpTaxValuation, "PHP")
+                        : "—"}
+                      {selected.phpValuationAutoPending && selected.needsReview ? (
+                        <Badge tone="warn">Auto · pending finalize</Badge>
+                      ) : null}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[11px] uppercase text-outline">
+                      Valuation Rate / Source
+                    </dt>
+                    <dd className="text-[12px]">
+                      {selected.phpValuationRate
+                        ? `Rate ${selected.phpValuationRate}`
+                        : null}
+                      {selected.phpValuationRate && selected.phpValuationSource
+                        ? " · "
+                        : null}
+                      {selected.phpValuationSource ??
+                        (selected.phpValuationRate ? null : "—")}
+                    </dd>
+                  </div>
+                </>
+              ) : null}
+              {selected.needsReview && selected.reviewReasons?.length ? (
+                <div>
+                  <dt className="text-[11px] uppercase text-outline">Review</dt>
+                  <dd className="text-[12px] text-error">
+                    {selected.reviewReasons.join(" · ")}
+                  </dd>
+                </div>
+              ) : null}
             </dl>
+
+            {selectedIncome?.phpValuationAutoPending &&
+            selectedIncome.needsReview &&
+            selectedIncome.phpTaxValuation ? (
+              <div className="mt-4 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-3 flex flex-col gap-2">
+                <p className="text-[12px] text-on-surface-variant leading-relaxed">
+                  This PHP valuation was auto-calculated from Frankfurter and is
+                  not yet included in Tax Summary or Books of Accounts. Finalize
+                  to accept it permanently.
+                </p>
+                <Button onClick={() => handleFinalize(selected)}>Finalize</Button>
+              </div>
+            ) : null}
+
             <div className="flex gap-2 mt-6">
               <Button onClick={() => openEdit(selected)}>Edit</Button>
               <Button variant="secondary" onClick={() => handleDuplicate(selected)}>

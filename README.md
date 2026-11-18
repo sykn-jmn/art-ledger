@@ -87,7 +87,7 @@ These are estimates for personal bookkeeping — not filing advice or official B
 ## Known limitations
 
 - Currency conversion and some foreign-currency expenses are flagged for account-mapping review rather than inventing GL postings.
-- Foreign income without a PHP tax valuation is marked “needs review”; tax totals are incomplete until resolved.
+- Foreign income without a manual PHP tax valuation is auto-filled via Frankfurter (ECB) and marked “needs review” until you Finalize it on the transaction details; tax/journal totals stay incomplete until then.
 - Revenue-share “calculated” amounts never auto-create payments.
 - Single-browser storage only; backups are manual.
 - Fee rules are configurable estimates, not live provider rates.

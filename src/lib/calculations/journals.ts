@@ -113,8 +113,12 @@ export function generateJournals(params: {
     const entryFlags: JournalFlag[] = [];
     if (missing) {
       entryFlags.push("missing_php_valuation");
+      const pendingAuto =
+        income.phpValuationAutoPending && Boolean(income.phpTaxValuation);
       flags.push({
-        message: `Income ${income.orderNumber} needs PHP tax valuation`,
+        message: pendingAuto
+          ? `Income ${income.orderNumber} has an auto-calculated PHP valuation — finalize to include in books`
+          : `Income ${income.orderNumber} needs PHP tax valuation`,
         sourceId: income.id,
         flag: "missing_php_valuation",
       });

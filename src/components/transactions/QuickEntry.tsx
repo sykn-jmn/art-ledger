@@ -248,12 +248,13 @@ export function QuickEntry() {
     <div className="flex flex-col gap-3" onPaste={handlePaste}>
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex flex-col gap-1">
-          <SectionHeading info="Enter or paste many income, expense, and conversion rows at once (date, type, name, description, amount, currency, and related fields). Fees and order numbers fill automatically when you bulk save. Failed rows stay in the grid so you can fix and retry.">
+          <SectionHeading info="Enter or paste many income, expense, and conversion rows at once (date, type, name, description, amount, currency, and related fields). Fees and order numbers fill automatically when you bulk save. Foreign income without a PHP valuation is auto-filled via Frankfurter and stays Needs review until you Finalize it. Failed rows stay in the grid so you can fix and retry.">
             Spreadsheet Quick-Entry
           </SectionHeading>
           <p className="text-[12px] text-on-surface-variant">
-            Paste from Excel (date, type, name, description, amount, currency…). Fees
-            and order numbers fill automatically.
+            Paste from Excel (date, type, name, description, amount, currency…). Fees,
+            order numbers, and missing PHP valuations fill automatically (auto
+            valuations need Finalize).
           </p>
         </div>
         <div className="flex items-center gap-2">

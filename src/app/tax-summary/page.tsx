@@ -109,7 +109,7 @@ export default function TaxSummaryPage() {
       {annual.incomplete ? (
         <div className="rounded bg-error-container/50 px-3 py-2 text-[12px] text-error">
           Estimates incomplete: {annual.missingValuationCount} foreign income
-          transaction(s) missing PHP tax valuation.{" "}
+          transaction(s) missing or unfinalized PHP tax valuation.{" "}
           <Link href="/transactions/?needsReview=1" className="underline font-medium">
             Review transactions
           </Link>

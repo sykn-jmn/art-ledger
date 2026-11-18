@@ -28,20 +28,7 @@ import {
   ensureSettings,
   getDb,
 } from "@/db/database";
-
-function reviewForIncome(
-  currency: IncomeTransaction["currency"],
-  phpTaxValuation?: string | null,
-): { needsReview: boolean; reviewReasons: string[] } {
-  if (currency === "PHP") return { needsReview: false, reviewReasons: [] };
-  if (!phpTaxValuation || phpTaxValuation.trim() === "") {
-    return {
-      needsReview: true,
-      reviewReasons: ["Missing PHP tax-reporting valuation"],
-    };
-  }
-  return { needsReview: false, reviewReasons: [] };
-}
+import { resolvePhpValuation } from "@/lib/calculations/php-valuation";
 
 async function usedOrderNumbers(excludeId?: string): Promise<Set<string>> {
   const db = getDb();
@@ -84,7 +71,14 @@ export async function createIncome(
     overrides: values.feeOverrides as Partial<Record<FeeType, string>>,
   });
 
-  const review = reviewForIncome(values.currency, values.phpTaxValuation);
+  const valuation = await resolvePhpValuation({
+    currency: values.currency,
+    grossAmount: values.grossAmount,
+    paymentDate: values.paymentDate,
+    phpTaxValuation: values.phpTaxValuation,
+    phpValuationRate: values.phpValuationRate,
+    phpValuationSource: values.phpValuationSource,
+  });
 
   const income: IncomeTransaction = {
     id: uuid(),
@@ -96,17 +90,12 @@ export async function createIncome(
     grossAmount: money(values.grossAmount),
     paymentMethod: values.paymentMethod,
     netReceived: feeResult.netReceived,
-    phpTaxValuation: values.phpTaxValuation
-      ? money(values.phpTaxValuation)
-      : values.currency === "PHP"
-        ? money(values.grossAmount)
-        : null,
-    phpValuationRate: values.phpValuationRate
-      ? money(values.phpValuationRate, 6)
-      : null,
-    phpValuationSource: values.phpValuationSource?.trim() || null,
-    needsReview: review.needsReview,
-    reviewReasons: review.reviewReasons,
+    phpTaxValuation: valuation.phpTaxValuation,
+    phpValuationRate: valuation.phpValuationRate,
+    phpValuationSource: valuation.phpValuationSource,
+    phpValuationAutoPending: valuation.phpValuationAutoPending,
+    needsReview: valuation.needsReview,
+    reviewReasons: valuation.reviewReasons,
     createdAt: ts,
     updatedAt: ts,
   };
@@ -177,7 +166,15 @@ export async function updateIncome(
     overrides: values.feeOverrides as Partial<Record<FeeType, string>>,
   });
 
-  const review = reviewForIncome(values.currency, values.phpTaxValuation);
+  const valuation = await resolvePhpValuation({
+    currency: values.currency,
+    grossAmount: values.grossAmount,
+    paymentDate: values.paymentDate,
+    phpTaxValuation: values.phpTaxValuation,
+    phpValuationRate: values.phpValuationRate,
+    phpValuationSource: values.phpValuationSource,
+    existing,
+  });
 
   const updated: IncomeTransaction = {
     ...existing,
@@ -189,17 +186,12 @@ export async function updateIncome(
     grossAmount: money(values.grossAmount),
     paymentMethod: values.paymentMethod,
     netReceived: feeResult.netReceived,
-    phpTaxValuation: values.phpTaxValuation
-      ? money(values.phpTaxValuation)
-      : values.currency === "PHP"
-        ? money(values.grossAmount)
-        : null,
-    phpValuationRate: values.phpValuationRate
-      ? money(values.phpValuationRate, 6)
-      : null,
-    phpValuationSource: values.phpValuationSource?.trim() || null,
-    needsReview: review.needsReview,
-    reviewReasons: review.reviewReasons,
+    phpTaxValuation: valuation.phpTaxValuation,
+    phpValuationRate: valuation.phpValuationRate,
+    phpValuationSource: valuation.phpValuationSource,
+    phpValuationAutoPending: valuation.phpValuationAutoPending,
+    needsReview: valuation.needsReview,
+    reviewReasons: valuation.reviewReasons,
     updatedAt: ts,
   };
 
@@ -233,6 +225,30 @@ export async function deleteIncome(id: string): Promise<void> {
     await db.fees.where("transactionId").equals(id).delete();
   });
   // Order numbers are never reused
+}
+
+/** Accept the stored (usually auto-calculated) PHP valuation permanently. */
+export async function finalizeIncomeValuation(
+  id: string,
+): Promise<IncomeTransaction> {
+  const db = getDb();
+  const existing = await db.incomes.get(id);
+  if (!existing) throw new Error("Income not found");
+  if (existing.currency === "PHP") return existing;
+  if (!existing.phpTaxValuation) {
+    throw new Error("Cannot finalize without a PHP tax valuation");
+  }
+
+  const ts = nowISO();
+  const updated: IncomeTransaction = {
+    ...existing,
+    phpValuationAutoPending: false,
+    needsReview: false,
+    reviewReasons: [],
+    updatedAt: ts,
+  };
+  await db.incomes.put(updated);
+  return updated;
 }
 
 export async function createExpense(
