@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Card } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { computeBalances } from "@/lib/calculations/balances";
 import { formatDisplayDate } from "@/lib/utils/dates";
 import { formatMoney } from "@/lib/utils/money";
@@ -25,8 +26,14 @@ export default function CurrencyBalancesPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div>
-        <h1 className="text-[24px] font-bold tracking-tight">Currency Balances</h1>
+      <div className="flex flex-col gap-1">
+        <SectionHeading
+          as="h1"
+          className="text-[24px] font-bold tracking-tight"
+          info="Available cash per currency, derived from opening balances plus net income and conversion inflows, minus expenses, withdrawals, and conversion outflows. Provider fees already deducted from income are not double-counted here."
+        >
+          Currency Balances
+        </SectionHeading>
         <p className="text-[13px] text-on-surface-variant">
           Derived from opening balances, net income, disbursements, and conversions.
           Provider fees already deducted from income are not double-counted.
@@ -66,8 +73,10 @@ export default function CurrencyBalancesPage() {
         )}
       </div>
 
-      <section>
-        <h2 className="text-[18px] font-semibold mb-2">Conversion history</h2>
+      <section className="flex flex-col gap-2">
+        <SectionHeading info="Chronological list of currency conversions you recorded, including exchange rate and fee. Conversions move cash between currencies without counting as income or expense.">
+          Conversion history
+        </SectionHeading>
         <Card className="overflow-hidden">
           <table className="w-full text-left">
             <thead>

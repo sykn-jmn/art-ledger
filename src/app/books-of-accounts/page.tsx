@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Download, Printer } from "lucide-react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Badge, Button, Card } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { generateJournals } from "@/lib/calculations/journals";
 import { exportJournalsXlsx } from "@/lib/exports/excel";
 import { formatDisplayDate } from "@/lib/utils/dates";
@@ -61,10 +62,16 @@ export default function BooksOfAccountsPage() {
           <div className="text-[11px] uppercase tracking-wider text-outline">
             Workspace · Financial Registry
           </div>
-          <h1 className="text-[24px] font-bold tracking-tight mt-1">
-            Books of Accounts
-          </h1>
-          <p className="text-[12px] text-on-surface-variant">
+          <div className="mt-1">
+            <SectionHeading
+              as="h1"
+              className="text-[24px] font-bold tracking-tight"
+              info="Auto-generated Cash Receipts Journal (CRJ), Cash Disbursements Journal (CDJ), and General Ledger (GL) from your recorded transactions for the selected year/quarter. These are derived views for bookkeeping reference — edit source transactions to change entries, not the journals themselves."
+            >
+              Books of Accounts
+            </SectionHeading>
+          </div>
+          <p className="text-[12px] text-on-surface-variant mt-1">
             Generated from recorded transactions — not separately editable copies.
           </p>
         </div>
@@ -160,6 +167,13 @@ export default function BooksOfAccountsPage() {
       ) : null}
 
       {tab === "CRJ" ? (
+        <div className="flex flex-col gap-2">
+          <SectionHeading
+            className="text-[15px] font-semibold"
+            info="Cash Receipts Journal lists money received — typically service revenue and related cash debit — mapped from income transactions for the selected period. Incomplete PHP valuations appear as flags."
+          >
+            Cash Receipts Journal (CRJ)
+          </SectionHeading>
         <Card className="overflow-hidden border border-outline-variant/30">
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[900px]">
@@ -229,9 +243,17 @@ export default function BooksOfAccountsPage() {
             </table>
           </div>
         </Card>
+        </div>
       ) : null}
 
       {tab === "CDJ" ? (
+        <div className="flex flex-col gap-2">
+          <SectionHeading
+            className="text-[15px] font-semibold"
+            info="Cash Disbursements Journal lists money going out — expenses, platform fees, recorded revenue share, withdrawals, and tools — mapped from expense and fee records for the selected period."
+          >
+            Cash Disbursements Journal (CDJ)
+          </SectionHeading>
         <Card className="overflow-hidden border border-outline-variant/30">
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[1200px]">
@@ -284,10 +306,17 @@ export default function BooksOfAccountsPage() {
             </table>
           </div>
         </Card>
+        </div>
       ) : null}
 
       {tab === "GL" ? (
         <div className="flex flex-col gap-3">
+          <SectionHeading
+            className="text-[15px] font-semibold"
+            info="General Ledger posts debit and credit lines derived from the CRJ and CDJ for each account. Filter by account to review activity; amounts stay linked to the underlying transactions."
+          >
+            General Ledger (GL)
+          </SectionHeading>
           <div className="no-print">
             <label className="text-[11px] uppercase text-outline mr-2">
               Account

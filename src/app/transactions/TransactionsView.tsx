@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Copy, Pencil, Plus, Trash2 } from "lucide-react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Badge, Button, Card, Input, Select } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   TransactionPanel,
   type PanelMode,
@@ -219,8 +220,14 @@ export default function TransactionsPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] font-bold tracking-tight">Transactions</h1>
+        <div className="flex flex-col gap-1">
+          <SectionHeading
+            as="h1"
+            className="text-[24px] font-bold tracking-tight"
+            info="Record and manage income, expenses, and currency conversions for the selected year and quarter. List View supports search and filters; Quick Entry is for pasting or typing many rows at once. These records feed Books of Accounts, Tax Summary, and Currency Balances."
+          >
+            Transactions
+          </SectionHeading>
           <p className="text-[12px] text-on-surface-variant font-mono">
             {filtered.length} shown · {year}
             {quarter === "all" ? "" : ` Q${quarter}`}

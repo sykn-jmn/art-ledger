@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AlertTriangle, Plus } from "lucide-react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Badge, Button, Card } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { calculateAnnualTax } from "@/lib/calculations/taxes";
 import { formatMoney } from "@/lib/utils/money";
 import { getYear, inYearQuarter } from "@/lib/utils/dates";
@@ -44,8 +45,14 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] font-bold tracking-tight">Dashboard</h1>
+        <div className="flex flex-col gap-1">
+          <SectionHeading
+            as="h1"
+            className="text-[24px] font-bold tracking-tight"
+            info="Overview of transaction volume, gross income, estimated tax, and items needing review for the selected year and quarter. Use it as a starting point before entering transactions or checking books and tax detail."
+          >
+            Dashboard
+          </SectionHeading>
           <p className="text-[13px] text-on-surface-variant">
             {year}
             {quarter === "all" ? "" : ` Q${quarter}`} · enter transactions, then
@@ -109,9 +116,14 @@ export default function DashboardPage() {
 
       {needsReview.length > 0 ? (
         <Card className="p-4">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="font-semibold text-[15px]">Transactions needing review</h2>
-            <Link href="/transactions/?needsReview=1" className="text-primary text-[12px]">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <SectionHeading
+              className="font-semibold text-[15px]"
+              info="Income entries that still need a PHP tax valuation. Foreign-currency income without PHP amount understates Gross Income, estimated tax, and journal mapping until you complete them."
+            >
+              Transactions needing review
+            </SectionHeading>
+            <Link href="/transactions/?needsReview=1" className="text-primary text-[12px] shrink-0">
               Open list
             </Link>
           </div>

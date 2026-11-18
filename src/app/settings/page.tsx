@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Button, Card, Field, Input, Select } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   createOpeningBalance,
   deleteOpeningBalance,
@@ -104,8 +105,14 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col gap-5 max-w-3xl">
-      <div>
-        <h1 className="text-[24px] font-bold tracking-tight">Settings</h1>
+      <div className="flex flex-col gap-1">
+        <SectionHeading
+          as="h1"
+          className="text-[24px] font-bold tracking-tight"
+          info="Configure order numbering, default currency, fee estimate rules, tax planning assumptions, opening balances, and JSON backup/restore. All ArtLedger data stays in this browser unless you export a backup."
+        >
+          Settings
+        </SectionHeading>
         <p className="text-[13px] text-on-surface-variant">
           Configure numbering, fees, tax assumptions, and local backups.
         </p>
@@ -124,7 +131,12 @@ export default function SettingsPage() {
       ) : null}
 
       <Card className="p-5 flex flex-col gap-3">
-        <h2 className="font-semibold text-[15px]">Order numbering & defaults</h2>
+        <SectionHeading
+          className="font-semibold text-[15px]"
+          info="Sets the next order/OR number for new income, the default currency on forms, and the revenue-share percentage used in Tax Summary. Changing the starting number does not renumber existing transactions."
+        >
+          Order numbering & defaults
+        </SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Starting order number">
             <Input
@@ -159,7 +171,12 @@ export default function SettingsPage() {
       </Card>
 
       <Card className="p-5 flex flex-col gap-3">
-        <h2 className="font-semibold text-[15px]">Fee rules (estimates)</h2>
+        <SectionHeading
+          className="font-semibold text-[15px]"
+          info="Default VGen and PayPal fee rates used to estimate platform fees when you record income. The fee amounts you save on each transaction still control books and balances — these rules only prefill estimates."
+        >
+          Fee rules (estimates)
+        </SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Field label="VGen %">
             <Input value={vgenPercent} onChange={(e) => setVgenPercent(e.target.value)} />
@@ -177,7 +194,12 @@ export default function SettingsPage() {
       </Card>
 
       <Card className="p-5 flex flex-col gap-3">
-        <h2 className="font-semibold text-[15px]">Tax assumptions</h2>
+        <SectionHeading
+          className="font-semibold text-[15px]"
+          info="Annual PHP deduction and flat tax rate used for estimated tax on the Dashboard and Tax Summary. These are planning assumptions for personal reference — not an official BIR computation or filed return."
+        >
+          Tax assumptions
+        </SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Annual deduction (PHP)">
             <Input
@@ -196,7 +218,12 @@ export default function SettingsPage() {
       </Card>
 
       <Card className="p-5 flex flex-col gap-3">
-        <h2 className="font-semibold text-[15px]">Opening balances</h2>
+        <SectionHeading
+          className="font-semibold text-[15px]"
+          info="Starting cash you already held in each currency before using ArtLedger. Opening balances seed Currency Balances and are not treated as income or expenses."
+        >
+          Opening balances
+        </SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Currency">
             <Select
@@ -265,7 +292,12 @@ export default function SettingsPage() {
       </Card>
 
       <Card className="p-5 flex flex-col gap-3">
-        <h2 className="font-semibold text-[15px]">Backup & restore</h2>
+        <SectionHeading
+          className="font-semibold text-[15px]"
+          info="Export a full JSON copy of this browser’s ArtLedger data, or import a backup to replace all local records. Restoring overwrites current data and cannot be undone — export first if you need a safety copy."
+        >
+          Backup & restore
+        </SectionHeading>
         <div className="flex flex-wrap gap-2">
           <Button onClick={handleExport}>Export JSON backup</Button>
           <label className="inline-flex">

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Download, Printer } from "lucide-react";
 import { useDb } from "@/components/providers/DbProvider";
 import { Button, Card, Field, Input, Select } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   calculateAnnualTax,
   calculateMonthlyIncome,
@@ -79,8 +80,14 @@ export default function TaxSummaryPage() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
-        <div>
-          <h1 className="text-[24px] font-bold tracking-tight">Tax Summary</h1>
+        <div className="flex flex-col gap-1">
+          <SectionHeading
+            as="h1"
+            className="text-[24px] font-bold tracking-tight"
+            info="Planning view of gross income, taxable income, estimated tax, payments, monthly income, quarterly progress, and revenue-share tracking for the selected year. Figures use your Settings assumptions and are not an official BIR return."
+          >
+            Tax Summary
+          </SectionHeading>
           <p className="text-[13px] text-on-surface-variant">
             Your income and estimated tax for the selected year. Not an official
             BIR return.
@@ -194,7 +201,9 @@ export default function TaxSummaryPage() {
       </Card>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-[18px] font-semibold">Monthly Income</h2>
+        <SectionHeading info="Month-by-month gross income in PHP for the selected tax year, plus the calculated revenue-share amount from your settings percentage. Foreign income without a PHP valuation is marked incomplete and can understate totals.">
+          Monthly Income
+        </SectionHeading>
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -232,7 +241,9 @@ export default function TaxSummaryPage() {
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-[18px] font-semibold">Quarterly Tax Summary</h2>
+        <SectionHeading info="Groups income into Q1–Q4 and tracks cumulative estimated tax against payments you have recorded for each quarter. Use Remaining to see how much estimated tax is still unpaid for planning purposes.">
+          Quarterly Tax Summary
+        </SectionHeading>
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[700px]">
@@ -275,7 +286,9 @@ export default function TaxSummaryPage() {
       </section>
 
       <section className="flex flex-col gap-2 no-print">
-        <h2 className="text-[18px] font-semibold">Record Tax Payment</h2>
+        <SectionHeading info="Log BIR tax payments you have already made for a quarter or the annual return. Recorded amounts reduce Remaining Tax on the summary cards and appear in the quarterly table. This does not file anything with the BIR.">
+          Record Tax Payment
+        </SectionHeading>
         <Card className="p-4 flex flex-wrap gap-3 items-end">
           <Field label="Period">
             <Select
@@ -338,13 +351,9 @@ export default function TaxSummaryPage() {
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-[18px] font-semibold">
+        <SectionHeading info={`Compares the calculated ${percent}% partner share of each month’s gross income against revenue-share expenses you actually recorded. Calculated share is informational only — it does not create a payment or change balances. Only recorded revenue-share expenses affect Currency Balances and the Cash Disbursements Journal.`}>
           Revenue Sharing ({percent}%)
-        </h2>
-        <p className="text-[12px] text-on-surface-variant">
-          Calculated share does not create a payment. Only recorded revenue-share
-          expenses affect balances and CDJ.
-        </p>
+        </SectionHeading>
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[700px]">

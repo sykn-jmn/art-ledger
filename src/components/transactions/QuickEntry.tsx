@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { v4 as uuid } from "uuid";
 import { Badge, Button, Input, Select } from "@/components/ui/primitives";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useDb } from "@/components/providers/DbProvider";
 import {
   createConversion,
@@ -246,8 +247,10 @@ export function QuickEntry() {
   return (
     <div className="flex flex-col gap-3" onPaste={handlePaste}>
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div>
-          <h2 className="text-[18px] font-semibold">Spreadsheet Quick-Entry</h2>
+        <div className="flex flex-col gap-1">
+          <SectionHeading info="Enter or paste many income, expense, and conversion rows at once (date, type, name, description, amount, currency, and related fields). Fees and order numbers fill automatically when you bulk save. Failed rows stay in the grid so you can fix and retry.">
+            Spreadsheet Quick-Entry
+          </SectionHeading>
           <p className="text-[12px] text-on-surface-variant">
             Paste from Excel (date, type, name, description, amount, currency…). Fees
             and order numbers fill automatically.
