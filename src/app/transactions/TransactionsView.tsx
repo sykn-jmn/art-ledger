@@ -266,18 +266,23 @@ export default function TransactionsPage() {
         <>
           <div className="flex flex-wrap gap-2 items-center">
             <Input
-              className="max-w-xs"
+              className="!w-56 max-w-full"
               placeholder="Search name, description, ref…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-            <Select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+            <Select
+              className="!w-auto min-w-[9rem]"
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+            >
               <option value="all">All types</option>
               <option value="income">Income</option>
               <option value="expense">Expense</option>
               <option value="conversion">Conversion</option>
             </Select>
             <Select
+              className="!w-auto min-w-[9rem]"
               value={currencyFilter}
               onChange={(e) => setCurrencyFilter(e.target.value)}
             >
@@ -287,6 +292,7 @@ export default function TransactionsPage() {
               <option value="EUR">EUR</option>
             </Select>
             <Select
+              className="!w-auto min-w-[11rem]"
               value={methodFilter}
               onChange={(e) => setMethodFilter(e.target.value)}
             >
@@ -298,6 +304,7 @@ export default function TransactionsPage() {
               ))}
             </Select>
             <Select
+              className="!w-auto min-w-[11rem]"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
@@ -308,7 +315,7 @@ export default function TransactionsPage() {
                 </option>
               ))}
             </Select>
-            <label className="flex items-center gap-1.5 text-[12px] text-on-surface-variant">
+            <label className="flex items-center gap-1.5 text-[12px] text-on-surface-variant whitespace-nowrap">
               <input
                 type="checkbox"
                 checked={needsReviewOnly}
