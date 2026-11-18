@@ -8,7 +8,7 @@ import { Badge, Button, Card } from "@/components/ui/primitives";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { calculateRevenueShare } from "@/lib/calculations/revenue-share";
 import { calculateAnnualTax, formatPhp } from "@/lib/calculations/taxes";
-import { formatMoney } from "@/lib/utils/money";
+import { add, formatMoney } from "@/lib/utils/money";
 import { getYear, inYearQuarter } from "@/lib/utils/dates";
 
 export default function DashboardPage() {
@@ -50,6 +50,28 @@ export default function DashboardPage() {
         percent,
       }),
     [incomes, expenses, year, percent],
+  );
+
+  const revenueShareTotals = useMemo(
+    () => ({
+      monthlyGross: revenueShare.reduce(
+        (sum, r) => add(sum, r.monthlyGross),
+        "0.00",
+      ),
+      calculatedShare: revenueShare.reduce(
+        (sum, r) => add(sum, r.calculatedShare),
+        "0.00",
+      ),
+      actualPaid: revenueShare.reduce(
+        (sum, r) => add(sum, r.actualPaid),
+        "0.00",
+      ),
+      outstanding: revenueShare.reduce(
+        (sum, r) => add(sum, r.outstanding),
+        "0.00",
+      ),
+    }),
+    [revenueShare],
   );
 
   if (!ready) {
@@ -196,6 +218,23 @@ export default function DashboardPage() {
                     </td>
                   </tr>
                 ))}
+                <tr className="border-t border-outline-variant/40 bg-surface-container-low/60 font-mono text-[12px]">
+                  <td className="px-4 py-2.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-outline">
+                    Total
+                  </td>
+                  <td className="px-4 py-2.5 text-right font-semibold">
+                    {formatPhp(revenueShareTotals.monthlyGross)}
+                  </td>
+                  <td className="px-4 py-2.5 text-right font-semibold">
+                    {formatPhp(revenueShareTotals.calculatedShare)}
+                  </td>
+                  <td className="px-4 py-2.5 text-right font-semibold">
+                    {formatPhp(revenueShareTotals.actualPaid)}
+                  </td>
+                  <td className="px-4 py-2.5 text-right font-semibold">
+                    {formatPhp(revenueShareTotals.outstanding)}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
